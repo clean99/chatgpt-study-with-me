@@ -1,6 +1,8 @@
 import ThirdPartyPasswordless from 'supertokens-node/recipe/thirdpartypasswordless';
 import Session from 'supertokens-node/recipe/session';
 import Dashboard from 'supertokens-node/recipe/dashboard';
+// import { TwilioService } from 'supertokens-node/recipe/thirdpartypasswordless/smsdelivery';
+import { sendValidationEmail } from './email';
 
 export const appInfo = {
   // Learn more about this on https://supertokens.com/docs/thirdpartypasswordless/appinfo
@@ -16,6 +18,27 @@ export const apiKey = process.env.AUTH_API_KEY ?? '';
 
 export const recipeList = [
   ThirdPartyPasswordless.init({
+    emailDelivery: {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      override: (originalImplementation) => {
+        return {
+          ...originalImplementation,
+          sendEmail: sendValidationEmail,
+        };
+      },
+    },
+    // smsDelivery: {
+    //   service: new TwilioService({
+    //     twilioSettings: {
+    //       accountSid: process.env.SID,
+    //       authToken: process.env.SID_TOKEN,
+
+    //       // give either from or messagingServiceSid
+    //       messagingServiceSid: process.env.SID_MESSAGE,
+    //     },
+    //   }),
+    // },
     providers: [
       // We have provided you with development keys which you can use for testing.
       // IMPORTANT: Please replace them with your own OAuth keys for production use.
