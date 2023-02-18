@@ -9,8 +9,8 @@ export class SupertokensService {
     supertokens.init({
       appInfo: config.appInfo,
       supertokens: {
-        connectionURI: config.connectionURI,
-        apiKey: config.apiKey,
+        connectionURI: SuperTokensConfig.connectionUri,
+        apiKey: SuperTokensConfig.apiKey,
       },
       recipeList: SuperTokensConfig.recipeList,
     });

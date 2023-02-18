@@ -1,6 +1,6 @@
 import ThirdPartyPasswordless from "supertokens-auth-react/recipe/thirdpartypasswordless";
 import Session from "supertokens-auth-react/recipe/session";
-console.log("process.env.REACT_APP_API_DOMAIN", process.env.REACT_APP_API_DOMAIN);
+
 export const SuperTokensConfig = {
     appInfo: {
         appName: "Studywithme",

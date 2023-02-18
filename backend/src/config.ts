@@ -12,6 +12,7 @@ export const appInfo = {
 };
 
 export const connectionUri = process.env.CONNECTION_URI ?? '';
+export const apiKey = process.env.AUTH_API_KEY ?? '';
 
 export const recipeList = [
   ThirdPartyPasswordless.init({
