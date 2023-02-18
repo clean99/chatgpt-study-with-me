@@ -6,7 +6,7 @@ WORKDIR /home/node
 
 COPY . /home/node
 
-RUN npm ci \
+RUN npm install \
     && npm run build \
     && npm prune --production
 
