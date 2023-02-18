@@ -15,7 +15,6 @@ export const SuperTokensConfig = {
                 providers: [
                     ThirdPartyPasswordless.Github.init(),
                     ThirdPartyPasswordless.Google.init(),
-                    ThirdPartyPasswordless.Apple.init(),
                 ],
             },
             contactMethod: "EMAIL_OR_PHONE",
