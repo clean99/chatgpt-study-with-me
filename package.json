@@ -1,0 +1,21 @@
+{
+        "name": "chatgpt-studywithme",
+        "version": "0.0.1",
+        "description": "",
+        "main": "index.js",
+        "scripts": {
+                "start:frontend": "cd frontend && npm run start",
+                "start:backend": "cd backend && npm run start",
+                "start": "npm-run-all --parallel start:frontend start:backend"
+        },
+        "keywords": [],
+        "author": "",
+        "license": "ISC",
+        "dependencies": {
+                "@nestjs/config": "^2.3.1",
+                "npm-run-all": "^4.1.5"
+        },
+        "devDependencies": {
+                "@types/node": "^18.14.0"
+        }
+}
