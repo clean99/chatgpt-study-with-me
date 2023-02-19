@@ -1,4 +1,5 @@
 import axios from 'axios'
+import style from '../App.module.scss'
 
 export default function CallAPIView() {
   async function callAPIClicked() {
@@ -7,7 +8,7 @@ export default function CallAPIView() {
   }
 
   return (
-    <div onClick={callAPIClicked} className='sessionButton'>
+    <div onClick={callAPIClicked} className={style.sessionButton}>
       Call API
     </div>
   )

@@ -1,4 +1,4 @@
-import './App.scss'
+import style from './App.module.scss'
 import SuperTokens, {
   SuperTokensWrapper,
   getSuperTokensRoutesForReactRouterDom,
@@ -14,9 +14,10 @@ SuperTokens.init(SuperTokensConfig)
 function App() {
   return (
     <SuperTokensWrapper>
-      <div className='App'>
+      <div className={style.App}>
         <Router>
-          <div className='fill'>
+          <div className={style.fill}>
+            <h1 className={style.header}>66666</h1>
             <Routes>
               {/* This shows the login UI on "/auth" route */}
               {getSuperTokensRoutesForReactRouterDom(ReactRouteDom)}
