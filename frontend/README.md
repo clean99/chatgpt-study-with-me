@@ -1,4 +1,4 @@
-# 🤖 ChatGPT Study With Me FE
+# 🤖 ChatGPT Study With Me AI FE
 📚 Front-end repository for ChatGPT Study With Me AI.
 ## 🚀 Getting Started
 To get started with this project, you should have Node.js and npm installed on your machine. Clone the repository and run `npm install` to install the necessary dependencies.
