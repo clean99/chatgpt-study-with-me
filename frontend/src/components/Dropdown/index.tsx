@@ -8,15 +8,15 @@ export interface DropdownProps {
     menu: {
         items: MenuProps;
     };
-    Avatar?: React.FC;
+    Icon?: React.FC;
     text: string;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ text, menu, Avatar }) => (
+const Dropdown: React.FC<DropdownProps> = ({ text, menu, Icon }) => (
   <AntdDropdown menu={menu}>
     <a onClick={(e) => e.preventDefault()}>
-      <Space>
-        {Avatar && <Avatar />}
+      <Space role={'menuitem'}>
+        {Icon && <Icon />}
         {text}
         <DownOutlined />
       </Space>

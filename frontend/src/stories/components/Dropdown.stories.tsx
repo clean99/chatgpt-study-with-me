@@ -55,7 +55,7 @@ export const Default = Template.bind({});
 
 Default.args = {
     text: 'Username',
-    Avatar: () => <Avatar src="https://picsum.photos/200" size="small" username="Alice Smith" onClick={action('clicked')} />,
+    Icon: () => <Avatar src="https://picsum.photos/200" size="small" username="Alice Smith" onClick={action('clicked')} />,
     menu: {
         items: options,
     },
@@ -72,7 +72,7 @@ NoAvatar.args = {
 
 export const NoText = Template.bind({});
 NoText.args = {
-    Avatar: () => <Avatar src="https://picsum.photos/200" size="small" username="Alice Smith" onClick={action('clicked')} />,
+    Icon: () => <Avatar src="https://picsum.photos/200" size="small" username="Alice Smith" onClick={action('clicked')} />,
     menu: {
         items: options,
     },

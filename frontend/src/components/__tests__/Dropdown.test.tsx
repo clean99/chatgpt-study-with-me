@@ -28,7 +28,7 @@ describe('Dropdown', () => {
 
   it('renders the avatar if provided', () => {
     const Avatar = () => <div>Avatar</div>;
-    render(<Dropdown {...defaultProps} Avatar={Avatar} />);
+    render(<Dropdown {...defaultProps} Icon={() => <Avatar />} />);
     expect(screen.getByText('Avatar')).toBeInTheDocument();
   });
 

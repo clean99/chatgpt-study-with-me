@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@ant-design/colors": "^7.0.0",
+    "@ant-design/icons": "^5.0.1",
     "@babel/runtime": "^7.20.13",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
