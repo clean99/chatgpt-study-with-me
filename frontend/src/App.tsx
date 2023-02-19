@@ -19,7 +19,6 @@ function App() {
       <div className={style.App}>
         <Router>
           <div className={style.fill}>
-            <h1 className={style.header}>66666</h1>
             <Routes>
               {/* This shows the login UI on "/auth" route */}
               {getSuperTokensRoutesForReactRouterDom(ReactRouteDom)}
