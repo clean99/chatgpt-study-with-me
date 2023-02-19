@@ -1,9 +1,9 @@
-import * as React from 'react';
+import * as React from 'react'
 
 interface ColorSwatchProps {
-  name: string;
-  code: string;
-  usage: string;
+  name: string
+  code: string
+  usage: string
 }
 
 const ColorSwatch: React.FC<ColorSwatchProps> = ({ name, code, usage }) => (
@@ -20,5 +20,5 @@ const ColorSwatch: React.FC<ColorSwatchProps> = ({ name, code, usage }) => (
     <div style={{ fontSize: '14px', marginBottom: '5px' }}>{code}</div>
     <div style={{ fontSize: '14px' }}>{usage}</div>
   </div>
-);
-export default ColorSwatch;
+)
+export default ColorSwatch
