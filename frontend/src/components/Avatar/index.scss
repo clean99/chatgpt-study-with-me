@@ -1,0 +1,46 @@
+// Avatar.scss
+@import '../../styles/color.scss';
+
+
+.avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    overflow: hidden;
+  
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  
+    &--font {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      background-color: $color-gray;
+      color: white;
+      font-size: 14px;
+      text-transform: uppercase;
+    }
+  
+    &--medium {
+      width: 32px;
+      height: 32px;
+    }
+
+    &--font--medium {
+        font-size: 18px;
+    }
+  
+    &--large {
+      width: 48px;
+      height: 48px;
+    }
+
+    &--font--large {
+        font-size: 24px;
+    }
+}  
