@@ -1,51 +1,48 @@
-![SuperTokens banner](https://raw.githubusercontent.com/supertokens/supertokens-logo/master/images/Artboard%20%E2%80%93%2027%402x.png)
-
-# SuperTokens EmailPassword Demo app
-
-This demo app demonstrates the following use cases:
-
--   Login
--   Sign up
--   Logout
--   Forgot password flow
--   Session management & Calling APIs
-
-## Project setup
-
-Clone the repo, enter the directory, and use `npm` to install the project dependencies:
+# 🤖 ChatGPT Study With Me FE
+📚 Front-end repository for ChatGPT Study With Me AI.
+## 🚀 Getting Started
+To get started with this project, you should have Node.js and npm installed on your machine. Clone the repository and run `npm install` to install the necessary dependencies.
 
 ```bash
-git clone https://github.com/supertokens/supertokens-auth-react
-cd supertokens-auth-react/examples/with-emailpassword
 npm install
+npm run start
 ```
 
-## Run the demo app
+## 💻 Available Scripts
+In the project directory, you can run:
 
-This compiles and serves the React app and starts the backend API server on port 3001.
+`npm start`
+Runs the app in the development mode. Open http://localhost:3000 to view it in the browser.
 
-```bash
-npm run dev
-```
+`npm test`
+Launches the test runner in the interactive watch mode.
 
-The app will start on `http://localhost:3000`
+`npm run build`
+Builds the app for production to the build folder.
 
-If you would like to modify the website (http://localhost:3000) or the API server (http://localhost:3001) URL:
+`npm run storybook`
+Runs Storybook for developing and testing components.
 
--   Change the `apiPort` or `apiDomain` values in `api-server.js`
--   Change the `apiPort` or `apiUrl` values in `src/App.js`
--   Change the `websitePort` or `websiteDomain` values in `api-server.js`
--   Change the `websitePort` or `websiteUrl` values in `src/App.js`
+`npm run build-storybook`
+Builds Storybook as a static web application.
 
-## Project structure & Parameters
+`npm run lint`
+Lints the code using ESLint.
 
--   The frontend code is located in the `src` folder.
--   The backend API is in the `api-server.js` file.
+`npm run lint:fix`
+Lints the code using ESLint and automatically fixes issues.
 
-## Author
+`npm run format`
+Formats the code using Prettier.
 
-Created with :heart: by the folks at supertokens.com.
+## 📁 Folder Structure
+The code is organized into the following directories:
 
-## License
+`src/components/`
+This directory contains the React components used throughout the application.
 
-This project is licensed under the Apache 2.0 license.
+`src/pages/`
+This directory contains the React components that represent pages of the application.
+
+`src/stories/`
+This directory contains the Storybook stories for testing the components.
