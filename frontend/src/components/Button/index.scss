@@ -1,0 +1,63 @@
+@import '../../styles/color.scss';
+
+.button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  
+    &--primary {
+      background-color: $color-primary;
+      color: white;
+  
+      &:hover {
+        background-color: $color-danger;
+      }
+    }
+  
+    &--secondary {
+      background-color: $color-accent1;
+      color: white;
+  
+      &:hover {
+        background-color: $color-accent2;
+      }
+    }
+  
+    &--danger {
+      background-color: $color-danger;
+      color: white;
+  
+      &:hover {
+        background-color: $color-warning;
+      }
+    }
+  
+    &--link {
+      background-color: transparent;
+      color: $color-text;
+  
+      &:hover {
+        color: $color-primary;
+        text-decoration: underline;
+      }
+    }
+    &--small {
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+
+    &--medium {
+        font-size: 12px;
+        padding: 8px 16px;
+    }
+
+    &--large {
+        font-size: 14px;
+        padding: 10px 20px;
+    }
+  }
+  
