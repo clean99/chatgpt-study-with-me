@@ -1,15 +1,15 @@
-import React from 'react';
-import { DownOutlined } from '@ant-design/icons';
-import  { type MenuProps as AntdMenuProps, Dropdown as AntdDropdown, Space } from 'antd';
+import React from 'react'
+import { DownOutlined } from '@ant-design/icons'
+import { type MenuProps as AntdMenuProps, Dropdown as AntdDropdown, Space } from 'antd'
 
-export type MenuProps =  AntdMenuProps['items'];
+export type MenuProps = AntdMenuProps['items']
 
 export interface DropdownProps {
-    menu: {
-        items: MenuProps;
-    };
-    Icon?: React.FC;
-    text: string;
+  menu: {
+    items: MenuProps
+  }
+  Icon?: React.FC
+  text: string
 }
 
 const Dropdown: React.FC<DropdownProps> = ({ text, menu, Icon }) => (
@@ -22,6 +22,6 @@ const Dropdown: React.FC<DropdownProps> = ({ text, menu, Icon }) => (
       </Space>
     </a>
   </AntdDropdown>
-);
+)
 
-export default Dropdown;
+export default Dropdown

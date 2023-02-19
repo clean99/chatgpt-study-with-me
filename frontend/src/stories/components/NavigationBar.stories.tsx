@@ -1,15 +1,15 @@
-import * as React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import NavigationBar from '../../components/NavigationBar';
+import * as React from 'react'
+import { ComponentStory, ComponentMeta } from '@storybook/react'
+import NavigationBar from '../../components/NavigationBar'
 
 export default {
   title: 'NavigationBar',
   component: NavigationBar,
-} as ComponentMeta<typeof NavigationBar>;
+} as ComponentMeta<typeof NavigationBar>
 
-const Template: ComponentStory<typeof NavigationBar> = (args) => <NavigationBar {...args} />;
+const Template: ComponentStory<typeof NavigationBar> = (args) => <NavigationBar {...args} />
 
-export const Default = Template.bind({});
+export const Default = Template.bind({})
 Default.args = {
   username: 'John Doe',
   avatarSrc: 'https://picsum.photos/200',
@@ -23,4 +23,4 @@ Default.args = {
     { label: 'Settings', key: '2', onClick: () => console.log('Settings clicked') },
     { label: 'Log out', key: '3', onClick: () => console.log('Log out clicked') },
   ],
-};
+}
