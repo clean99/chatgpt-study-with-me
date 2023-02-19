@@ -1,4 +1,5 @@
 import style from './App.module.scss'
+import 'antd/dist/reset.css';
 import SuperTokens, {
   SuperTokensWrapper,
   getSuperTokensRoutesForReactRouterDom,
@@ -8,6 +9,7 @@ import { Routes, BrowserRouter as Router, Route } from 'react-router-dom'
 import * as ReactRouteDom from 'react-router-dom'
 import Home from './Home'
 import { SuperTokensConfig } from './config'
+
 
 SuperTokens.init(SuperTokensConfig)
 

@@ -1,0 +1,9 @@
+:global {
+    .ant-dropdown-trigger {
+        @apply flex;
+    }
+    .ant-space-item {
+        @apply flex;
+        @apply items-center;
+    }
+}
