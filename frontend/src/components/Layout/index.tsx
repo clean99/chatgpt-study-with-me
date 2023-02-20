@@ -3,6 +3,7 @@ import { Layout as AntdLayout, Skeleton, Space } from 'antd'
 import NavigationBar from '../NavigationBar'
 import Footer from '../Footer'
 import useAuth from '../../hooks/useAuth'
+import { useNavigate } from 'react-router-dom'
 
 const { Content } = AntdLayout
 
@@ -12,12 +13,13 @@ export interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { sessionContext, userInfo, logoutClicked } = useAuth();
+  const navigate = useNavigate();
   const dropdownOptions = [
     { label: 'Log out', key: '3', onClick: () => logoutClicked()},
   ]
   const navigationMenuItems = [
-    { label: 'Home', key: 'home' },
-    { label: 'About', key: 'about' },
+    { label: 'Home', key: 'home', onClick: () => navigate('/home') },
+    { label: 'ChatGPT', key: 'chat', onClick: () => navigate('/chat') },
     { label: 'Contact', key: 'contact' },
   ]
 

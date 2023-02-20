@@ -2,6 +2,7 @@ import * as React from 'react';
 import ConversationBox from '../../components/ConversationBox';
 import { TextArea } from '../../components/Input';
 import Layout from '../../components/Layout';
+import styles from './index.module.scss';
 import useConversation from './useConversation';
 
 const ConversationPage: React.FC = () => {
@@ -9,7 +10,7 @@ const ConversationPage: React.FC = () => {
 
     return (
       <Layout>
-        <div className="bg-gray-100 max-w-full h-screen flex flex-col justify-end items-center pb-4">
+        <div className={styles.container}>
         <div className='grow-1 py-4'>
           <ConversationBox response={response} />
           </div>
