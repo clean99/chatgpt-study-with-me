@@ -7,7 +7,7 @@ import SuperTokens, {
 import { SessionAuth } from 'supertokens-auth-react/recipe/session'
 import { Routes, BrowserRouter as Router, Route } from 'react-router-dom'
 import * as ReactRouteDom from 'react-router-dom'
-import Home from './Home'
+import Home from './pages/Home'
 import { SuperTokensConfig } from './config'
 
 
