@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
       <div className='px-4 flex flex-row items-center justify-between'>
         <div className='flex'>
           <div className='text-gray-400 mr-2'>{'\u00A9'}2023 StudywithmeAI Inc.</div>
-          <div className='flex items-center'>
+          <div className='flex items-center mr-2'>
             <MailOutlined className='mr-2 text-gray-400' />
             <p className='text-gray-400'>ai.studywithme@gmail.com</p>
           </div>
