@@ -11,7 +11,7 @@ const ConversationPage: React.FC = () => {
     return (
       <Layout>
         <div className={styles.container}>
-        <div className='grow-1 py-4'>
+        <div className='grow-1 py-4 w-full'>
           <ConversationBox response={response} />
           </div>
           <TextArea style={{maxWidth: '1100px'}} disabled={loading} value={input} onChange={handleInputOnChange} onKeyDown={handleOnEnter} />
