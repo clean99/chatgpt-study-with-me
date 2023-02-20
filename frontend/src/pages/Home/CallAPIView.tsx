@@ -1,5 +1,5 @@
 import axios from 'axios'
-import style from '../App.module.scss'
+import style from '../../App.module.scss'
 
 export default function CallAPIView() {
   async function callAPIClicked() {
