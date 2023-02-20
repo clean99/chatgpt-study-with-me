@@ -25,10 +25,10 @@ export interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => (
-  <Space direction='vertical' style={{ width: '100%' }} size={[0, 48]}>
-    <AntdLayout>
+  <Space direction='vertical'  style={{ width: '100%' }} size={[0, 48]}>
+    <AntdLayout className='min-h-screen max-w-screen'>
       <NavigationBar {...navigationBarArgs} />
-      <Content>{children}</Content>
+      <Content className='px-4 py-4'>{children}</Content>
       <Footer />
     </AntdLayout>
   </Space>

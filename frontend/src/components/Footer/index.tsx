@@ -4,7 +4,7 @@ import { MailOutlined, GithubOutlined, WechatOutlined } from '@ant-design/icons'
 
 const Footer: React.FC = () => {
   return (
-    <footer className={`${styles.footer} bg-gray-800 py-10 px-20`}>
+    <footer className={`${styles.footer} bg-gray-800 py-10 px-10`}>
       <div className='px-4 flex flex-row items-center justify-between'>
         <div className='flex'>
           <div className='text-gray-400 mr-2'>{'\u00A9'}2023 StudywithmeAI Inc.</div>

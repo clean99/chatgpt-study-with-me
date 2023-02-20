@@ -24,12 +24,13 @@ const ConversationBox = ({ response }: ConversationBoxProps) => {
     }) ?? [];
     
     return (
-        <MessageList
-        referance={messageListReferance}
-        className='message-list'
-        lockable={true}
-        toBottomHeight={'100%'}
-        dataSource={dataSource} />
+
+            <MessageList
+            referance={messageListReferance}
+            className='message-list'
+            lockable={true}
+            toBottomHeight={'100%'}
+            dataSource={dataSource} />
     );
 }
 
