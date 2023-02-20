@@ -7,6 +7,11 @@ import { SupertokensExceptionFilter } from './auth/auth.filter';
 import * as SuperTokensConfig from './config';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as sgMail from '@sendgrid/mail';
+import fetch from 'node-fetch';
+// eslint-disable-next-line
+// @ts-ignore
+global.fetch = fetch;
+
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 async function bootstrap() {

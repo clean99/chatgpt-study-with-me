@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { ChatgptModule } from './chatgpt/chatgpt.module';
 import * as SuperTokensConfig from './config';
 
 @Module({
@@ -14,6 +15,7 @@ import * as SuperTokensConfig from './config';
       appInfo: SuperTokensConfig.appInfo,
     }),
     UserModule,
+    ChatgptModule,
   ],
   controllers: [AppController],
   providers: [AppService],
