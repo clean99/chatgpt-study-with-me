@@ -1,37 +1,39 @@
 import React from 'react'
-import { Layout as AntdLayout, Space } from 'antd'
+import { Layout as AntdLayout, Skeleton, Space } from 'antd'
 import NavigationBar from '../NavigationBar'
 import Footer from '../Footer'
+import useAuth from '../../hooks/useAuth'
 
 const { Content } = AntdLayout
-
-const navigationBarArgs = {
-  username: 'John Doe',
-  avatarSrc: 'https://picsum.photos/200',
-  navigationMenuItems: [
-    { label: 'Home', key: 'home' },
-    { label: 'About', key: 'about' },
-    { label: 'Contact', key: 'contact' },
-  ],
-  dropdownOptions: [
-    { label: 'Profile', key: '1', onClick: () => console.log('Profile clicked') },
-    { label: 'Settings', key: '2', onClick: () => console.log('Settings clicked') },
-    { label: 'Log out', key: '3', onClick: () => console.log('Log out clicked') },
-  ],
-}
 
 export interface LayoutProps {
   children: React.ReactNode
 }
 
-const Layout: React.FC<LayoutProps> = ({ children }) => (
-  <Space direction='vertical'  style={{ width: '100%' }} size={[0, 48]}>
-    <AntdLayout className='min-h-screen max-w-screen'>
-      <NavigationBar {...navigationBarArgs} />
-      <Content className='px-4 py-4'>{children}</Content>
-      <Footer />
-    </AntdLayout>
-  </Space>
-)
+const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const { sessionContext, userInfo, logoutClicked } = useAuth();
+  const dropdownOptions = [
+    { label: 'Log out', key: '3', onClick: () => logoutClicked()},
+  ]
+  const navigationMenuItems = [
+    { label: 'Home', key: 'home' },
+    { label: 'About', key: 'about' },
+    { label: 'Contact', key: 'contact' },
+  ]
 
+  if(sessionContext.loading) {
+    <Skeleton />
+  }
+
+
+  return (
+    <Space direction='vertical'  style={{ width: '100%' }} size={[0, 48]}>
+      <AntdLayout className='min-h-screen max-w-screen'>
+        <NavigationBar isLogin={(sessionContext as any).userId} navigationMenuItems={navigationMenuItems} username={userInfo.email ?? ''} dropdownOptions={dropdownOptions} />
+        <Content className='px-4 py-4'>{children}</Content>
+        <Footer />
+      </AntdLayout>
+    </Space>
+  ) 
+}
 export default Layout

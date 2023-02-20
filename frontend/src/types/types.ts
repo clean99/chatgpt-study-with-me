@@ -9,3 +9,18 @@ export interface Response {
 };
 
 export type Position = 'left' | 'right';
+
+export enum ThirdPartyType {
+    GOOGLE = 'google',
+    GITHUB = 'github',
+}
+
+export interface UserInfo {
+    email?: string,
+    id: string,
+    thridParty: {
+        id: ThirdPartyType,
+        userId: string
+    }
+    timeJoined?: number
+}

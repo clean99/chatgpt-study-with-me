@@ -3,6 +3,8 @@ import './index.scss'
 import Dropdown, { MenuProps as DropdownMenuProps } from '../Dropdown'
 import Avatar from '../Avatar'
 import { TranslationOutlined, QuestionCircleOutlined } from '@ant-design/icons'
+import { Button } from 'antd'
+import { useNavigate } from 'react-router-dom'
 
 export interface NavigationMenuItems {
   label: string
@@ -14,6 +16,7 @@ export interface NavigationBarProps {
   username: string
   avatarSrc?: string
   dropdownOptions: DropdownMenuProps
+  isLogin?: boolean
   navigationMenuItems: NavigationMenuItems[]
 }
 
@@ -22,7 +25,9 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
   avatarSrc,
   dropdownOptions,
   navigationMenuItems,
+  isLogin,
 }) => {
+  const navigate = useNavigate();
   return (
     <div className='navigation-bar'>
       <div className='navigation-bar__menulogo'>
@@ -48,13 +53,16 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
           <QuestionCircleOutlined />
         </div>
         <div className='navigation-bar__icon'>
-          <div className='navigation-bar__dropdown'>
-            <Dropdown
-              menu={{ items: dropdownOptions }}
-              Icon={() => <Avatar size={'small'} src={avatarSrc} username={username} />}
-              text={username}
-            />
-          </div>
+          {
+            isLogin ?
+              <div className='navigation-bar__dropdown'>
+              <Dropdown
+                menu={{ items: dropdownOptions }}
+                Icon={() => <Avatar size={'small'} src={avatarSrc} username={username} />}
+                text={username}
+              />
+          </div> : <Button type='text' onClick={() => navigate('/auth')} >Log In</Button>
+          }
         </div>
       </div>
     </div>

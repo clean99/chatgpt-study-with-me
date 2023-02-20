@@ -10,7 +10,7 @@ export default {
 
 const Template: ComponentStory<typeof HomePage> = (args) => <HomePage {...args} />
 
-const posts: PostWithDescriptionProps[] = [
+export const posts: PostWithDescriptionProps[] = [
   {
     title: 'Feature 1',
     description:
