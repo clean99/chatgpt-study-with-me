@@ -1,0 +1,8 @@
+.container {
+    @apply flex;
+    @apply flex-col;
+    @apply items-center;
+    @apply max-w-full;
+    @apply my-20;
+    @apply mx-4;
+}

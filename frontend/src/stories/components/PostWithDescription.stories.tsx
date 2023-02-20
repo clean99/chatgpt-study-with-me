@@ -1,9 +1,9 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import PostWithDescription from '../../components/PostWithDescription';
+import PostWithDescription, { PhotoPosition } from '../../components/PostWithDescription';
 
 export default {
-  title: 'Example/PostWithDescription',
+  title: 'Components/PostWithDescription',
   component: PostWithDescription,
 } as ComponentMeta<typeof PostWithDescription>;
 
@@ -14,7 +14,7 @@ PostWithDescriptionExample.args = {
   title: 'My Title',
   description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec ante ante. Donec consequat, arcu at blandit laoreet, elit elit accumsan sapien, vel hendrerit enim dolor et nunc.',
   photo: 'https://picsum.photos/400',
-  position: 'left',
+  position: PhotoPosition.LEFT,
   withEffect: true,
 };
 
@@ -23,7 +23,7 @@ PhotoAtRight.args = {
   title: 'My Title',
   description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec ante ante. Donec consequat, arcu at blandit laoreet, elit elit accumsan sapien, vel hendrerit enim dolor et nunc.',
   photo: 'https://picsum.photos/400',
-  position: 'right',
+  position: PhotoPosition.RIGHT,
   withEffect: true,
 };
 
@@ -32,6 +32,6 @@ WithoutEffect.args = {
   title: 'My Title',
   description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec ante ante. Donec consequat, arcu at blandit laoreet, elit elit accumsan sapien, vel hendrerit enim dolor et nunc.',
   photo: 'https://picsum.photos/400',
-  position: 'left',
+  position: PhotoPosition.LEFT,
   withEffect: false,
 };

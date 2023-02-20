@@ -2,11 +2,16 @@ import React from 'react';
 import cx from 'classnames';
 import styles from './index.module.scss';
 
-interface PostWithDescriptionProps {
+export enum PhotoPosition {
+  LEFT = 'left',
+  RIGHT = 'right',
+};
+
+export interface PostWithDescriptionProps {
   title: string;
   description: string;
   photo: string;
-  position: 'left' | 'right';
+  position: PhotoPosition;
   withEffect?: boolean;
 }
 
@@ -18,18 +23,18 @@ const PostWithDescription: React.FC<PostWithDescriptionProps> = ({
   withEffect = false,
 }) => {
   const containerClassName = cx(styles.container, {
-    [styles.containerRight]: position === 'right',
+    [styles.containerRight]: position === PhotoPosition.RIGHT,
   });
 
   const photoClassName = cx(styles.photo, {
-    [styles.photoLeft]: position === 'left',
-    [styles.photoRight]: position === 'right',
+    [styles.photoLeft]: position === PhotoPosition.LEFT,
+    [styles.photoRight]: position === PhotoPosition.RIGHT,
     [styles.photoWithEffect]: withEffect,
   });
 
   const textClassName = cx(styles.text, {
-    [styles.textLeft]: position === 'right',
-    [styles.textRight]: position === 'left',
+    [styles.textLeft]: position === PhotoPosition.RIGHT,
+    [styles.textRight]: position === PhotoPosition.LEFT,
     [styles.textWithEffect]: withEffect,
   });
 
