@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { ChatgptModule } from './chatgpt/chatgpt.module';
 import { GqlModule } from './gql/gql.module';
+import { KnowledgeNodeModule } from './knowledge-node/knowledge-node.module';
 import * as SuperTokensConfig from './config';
 
 @Module({
@@ -18,6 +19,7 @@ import * as SuperTokensConfig from './config';
     UserModule,
     ChatgptModule,
     GqlModule,
+    KnowledgeNodeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

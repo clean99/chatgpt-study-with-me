@@ -7,14 +7,19 @@ export const typeDefs = gql`
   }
 
   type User {
-    id: String!
+    id: ID!
+    createdAt: DateTime!
+    updatedAt: DateTime!
     hasNodes: [KnowledgeNode!]!
       @relationship(type: "HAS_KNOWLEDGE_NODE", direction: OUT)
   }
 
   type KnowledgeNode {
+    id: ID
     title: String!
-    completed: Boolean!
+    completed: Boolean! @default(value: false)
+    createdAt: DateTime!
+    updatedAt: DateTime!
     edges: [KnowledgeNode!]!
       @relationship(
         type: "KNOWLEDGE_NODE_RELATION"
@@ -24,7 +29,7 @@ export const typeDefs = gql`
   }
 
   interface KnowledgeEdgeRelation @relationshipProperties {
-    type: KnowledgeEdgeType!
+    type: KnowledgeEdgeType! @default(value: HAS_KNOWLEDGE)
   }
 
   extend type User
