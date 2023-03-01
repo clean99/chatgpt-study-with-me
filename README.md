@@ -3,10 +3,9 @@ This is a ChatGPT based platform for education that can help you learn a new sub
 
 ## 📝 Documents
 - [PRD&TRD](https://royal-apricot-fc8.notion.site/StudyWithMe-AI-57d321a129f7465b85c5e0bb0c8f9dc6) - Product Requirement Document and Technical Requirement Document for the application.
-- [Storybook Documentation](http://localhost:6006/?path=/story) - `http://localhost:6006/?path=/story` Storybook documentation for the application.
-- [API Documentation](http://locahost:3001/api#/) - `http://locahost:3001/api#` API documentation for the application. Please run `npm install` and `npm run start` and login to the application before accessing the API documentation for authentication.
+- [Storybook Documentation](https://storybook.studywithme.ai/) - Storybook documentation for the application.
+- [API Documentation](https://api.studywithme.ai:3001/api) - API documentation for the application. Please run `npm install` and `npm run start` and login to the application before accessing the API documentation for authentication.
 - [Database Playground](http://localhost:3001/playground) - `http://localhost:3001/playground` GraphQL playground for the database. Please run `npm install` and `npm run start` before accessing the database playground for authentication.
-
 
 ## 🚀 Getting Started
 To get started with this project, run `npm install` and `npm run start` in the project root directory.
