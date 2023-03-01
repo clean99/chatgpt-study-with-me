@@ -2,8 +2,7 @@ name: Build and Deploy Storybook
 on: 
   push:
     branches:
-      - 'dev' # Trigger the action only pushed to a specific branch
-      - '!main' # Ignore if pushed to a specific branch
+      - 'main' # Trigger the action only pushed to a specific branch
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
