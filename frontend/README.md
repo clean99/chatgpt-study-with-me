@@ -26,6 +26,9 @@ Runs Storybook for developing and testing components.
 `npm run build-storybook`
 Builds Storybook as a static web application.
 
+`npx run serve-storybook`
+Serves Storybook as a static web application.
+
 `npm run lint`
 Lints the code using ESLint.
 
