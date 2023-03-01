@@ -28,7 +28,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --watch",
+    "test": "react-scripts test",
+    "test:watch": "react-scripts test --watch",
     "test:cov": "react-scripts test --coverage",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
