@@ -1,0 +1,6 @@
+snyk-test:
+  image: snyk/snyk:docker
+  script:
+    - snyk auth $SNYK_TOKEN
+    - snyk test
+
