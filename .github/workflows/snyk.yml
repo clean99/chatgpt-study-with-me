@@ -1,3 +1,11 @@
+name: Snyk
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
 snyk-test:
   image: snyk/snyk:docker
   script:
