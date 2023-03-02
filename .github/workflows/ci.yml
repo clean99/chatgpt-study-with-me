@@ -32,7 +32,7 @@ jobs:
           cd backend && npm run lint && npm run format
 
       - name: Test frontend
-        run: cd frontend && npm run test
+        run: cd frontend && npm run test:cov
 
       - name: Test backend
         run: cd backend && npm run test:cov

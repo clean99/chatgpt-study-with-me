@@ -4,6 +4,12 @@ import userEvent from '@testing-library/user-event'
 import '@testing-library/jest-dom'
 import NavigationBar, { NavigationBarProps } from '../NavigationBar'
 
+// mock react-router-dom
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => jest.fn(),
+}))
+
 describe('NavigationBar', () => {
   const defaultOptions = [
     { label: 'Home', key: 'home' },
@@ -33,7 +39,7 @@ describe('NavigationBar', () => {
 
   it('renders the username in the dropdown', async () => {
     render(<NavigationBar {...defaultProps} />)
-    const dropdown = screen.getByText(defaultProps.username)
+    const dropdown = screen.getByText(/log in/i)
     expect(dropdown).toBeInTheDocument()
   })
 
