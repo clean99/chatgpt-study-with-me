@@ -21,15 +21,17 @@
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.1",
     "sass": "^1.58.3",
+    "storybook-addon-react-router-v6": "^0.2.1",
     "supertokens-auth-react": "latest",
     "typescript": "^4.8.2",
+    "vis-network": "^9.1.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --watchAll=false",
-    "test:watch": "react-scripts test --watch",
+    "test:watch": "react-scripts test --watch --setupFilesAfterEnv=./.jest/setupEnv.ts",
     "test:cov": "react-scripts test --coverage --watchAll=false",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",

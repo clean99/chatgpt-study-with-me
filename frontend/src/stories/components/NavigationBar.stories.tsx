@@ -1,10 +1,12 @@
 import * as React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import NavigationBar from '../../components/NavigationBar'
+import { withRouter } from 'storybook-addon-react-router-v6'
 
 export default {
   title: 'Components/NavigationBar',
   component: NavigationBar,
+  decorators: [withRouter],
 } as ComponentMeta<typeof NavigationBar>
 
 const Template: ComponentStory<typeof NavigationBar> = (args) => <NavigationBar {...args} />
