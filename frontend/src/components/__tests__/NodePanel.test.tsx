@@ -17,10 +17,14 @@ beforeAll(() => {
 afterAll(() => {
   jest.spyOn(console, 'error').mockRestore()
   jest.spyOn(console, 'warn').mockRestore()
+  jest.clearAllMocks()
 })
 
-test('renders NodePanel with title and cancel icon', async () => {
+function install() {
+  const onSubmit = jest.fn()
   const onClose = jest.fn()
+  const onDelete = jest.fn()
+  const onAdd = jest.fn()
   render(
     <NodePanel
       x={0}
@@ -28,16 +32,27 @@ test('renders NodePanel with title and cancel icon', async () => {
       nodeData={nodeData}
       isVisible={true}
       onClose={onClose}
-      onSubmit={() => 'onSubmit'}
-      onDelete={() => 'onDelete'}
+      onSubmit={onSubmit}
+      onDelete={onDelete}
+      onAdd={onAdd}
     />,
   )
+  return {
+    onSubmit,
+    onClose,
+    onDelete,
+    onAdd,
+  }
+}
+
+test('renders NodePanel with title and cancel icon', async () => {
+  const { onClose } = install()
   const cancelButton = screen.getByRole('button', {
     name: '×',
   })
   expect(
     screen.getByRole('heading', {
-      name: 'Modify Node',
+      name: 'Node Panel',
     }),
   ).toBeInTheDocument()
   expect(cancelButton).toBeInTheDocument()
@@ -46,18 +61,8 @@ test('renders NodePanel with title and cancel icon', async () => {
 })
 
 test('submits NodePanel form with new title and status', async () => {
-  const onSubmit = jest.fn()
-  render(
-    <NodePanel
-      x={0}
-      y={0}
-      nodeData={nodeData}
-      isVisible={true}
-      onClose={() => 'onClose'}
-      onSubmit={onSubmit}
-      onDelete={() => 'onDelete'}
-    />,
-  )
+  const { onSubmit } = install()
+
   const titleInput = screen.getByLabelText('Title')
   const submitButton = screen.getByText('Submit')
   expect(titleInput).toHaveValue(nodeData.label)
@@ -75,26 +80,37 @@ test('submits NodePanel form with new title and status', async () => {
 })
 
 test('deletes NodePanel node', async () => {
-    const onDelete = jest.fn()
-    render(
-        <NodePanel
-            x={0}
-            y={0}
-            nodeData={nodeData}
-            isVisible={true}
-            onClose={() => 'onClose'}
-            onSubmit={() => 'onSubmit'}
-            onDelete={onDelete}
-        />,
+  const { onDelete } = install()
 
-    )
     const deleteButton = screen.getByRole('button', {
         name: 'Delete',
     })
     expect(deleteButton).toBeInTheDocument()
     await userEvent.click(deleteButton)
-    await waitFor(() => {
-        expect(onDelete).toHaveBeenCalledTimes(1)
-    })
+    expect(onDelete).toHaveBeenCalledTimes(1)
+})
+
+test('adds node', async () => {
+  const { onAdd } = install()
+
+  await userEvent.click(screen.getByText('New Nodes'))
+
+  const addButton = screen.getByRole('button', {
+      name: /plus Add field/i,
+  })
+  expect(addButton).toBeInTheDocument()
+  await userEvent.click(addButton)
+  await userEvent.type(screen.getByPlaceholderText(/node title/i), 'New Node')
+  await userEvent.click(addButton)
+  await userEvent.type(screen.getAllByPlaceholderText(/node title/i)[1], 'New Node 2')
+  await userEvent.click(screen.getByText('Submit'))
+
+  await waitFor(() => {
+    expect(onAdd).toHaveBeenCalledTimes(1)
+  })
+  expect(onAdd).toHaveBeenCalledWith(nodeData.id, [
+    'New Node',
+    'New Node 2',
+  ])
 })
 

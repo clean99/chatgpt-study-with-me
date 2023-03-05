@@ -3,8 +3,8 @@ import styles from './index.module.scss';
 
 // Define the Tabs enum
 export enum Tabs {
-  MODIFY='Modify',
-  INCREASE='Increase'
+  MODIFY,
+  NEW_NODES,
 };
 
 // Define the TabsComponent props
@@ -28,10 +28,10 @@ const TabsComponent: React.FC<TabsComponentProps> = ({ current, setTab }) => {
           Modify
         </li>
         <li
-          onClick={() => handleClick(Tabs.INCREASE)}
-          className={`${styles.tab} ${current === Tabs.INCREASE ? styles.active : ''}`}
+          onClick={() => handleClick(Tabs.NEW_NODES)}
+          className={`${styles.tab} ${current === Tabs.NEW_NODES ? styles.active : ''}`}
         >
-          Increase
+          New Nodes
         </li>
       </ul>
     </div>

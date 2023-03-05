@@ -8,7 +8,7 @@ describe('TabsComponent', () => {
     render(<TabsComponent current={Tabs.MODIFY} setTab={jest.fn()} />);
 
     const modifyTab = screen.getByText('Modify');
-    const increaseTab = screen.getByText('Increase');
+    const increaseTab = screen.getByText('New Nodes');
 
     expect(modifyTab).toBeInTheDocument();
     expect(increaseTab).toBeInTheDocument();
@@ -18,17 +18,17 @@ describe('TabsComponent', () => {
     const setTabMock = jest.fn();
     render(<TabsComponent current={Tabs.MODIFY} setTab={setTabMock} />);
 
-    const increaseTab = screen.getByText('Increase');
+    const increaseTab = screen.getByText('New Nodes');
     await userEvent.click(increaseTab);
 
-    expect(setTabMock).toHaveBeenCalledWith(Tabs.INCREASE);
+    expect(setTabMock).toHaveBeenCalledWith(Tabs.NEW_NODES);
   });
 
   it('applies the active class to the current tab', () => {
     render(<TabsComponent current={Tabs.MODIFY} setTab={jest.fn()} />);
 
     const modifyTab = screen.getByText('Modify');
-    const increaseTab = screen.getByText('Increase');
+    const increaseTab = screen.getByText('New Nodes');
 
     expect(modifyTab).toHaveClass('active');
     expect(increaseTab).not.toHaveClass('active');

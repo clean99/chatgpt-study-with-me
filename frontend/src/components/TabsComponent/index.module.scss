@@ -2,18 +2,14 @@
 
 .tabs {
     background-color: #fff;
-    border: 1px solid $color-border;
-    padding: 16px;
   }
   
   .tabList {
     display: flex;
-    gap: 16px;
   }
   
   .tab {
     padding: 8px 16px;
-    border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
     color: $color-text;

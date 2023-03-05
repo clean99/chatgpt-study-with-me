@@ -1,11 +1,12 @@
 import React from 'react'
 import { Node } from '../../types/types'
-import Button from '../Button'
 import styles from './index.module.scss'
-import { Form, Select, Typography } from 'antd'
-import { Input } from '../Input'
+import { Typography } from 'antd'
+import ModifyNodeForm from './components/ModifyNodeForm'
+import TabsComponent, { Tabs } from '../TabsComponent'
+import GenerateNodeForm from './components/GenerateNodeForm'
+import ThemeProvider from '../ThemeProvider'
 
-const { Option } = Select
 const { Title } = Typography
 
 interface NodePanelProps {
@@ -17,6 +18,7 @@ interface NodePanelProps {
   isVisible: boolean
   onClose: () => void
   onSubmit: (values: Node) => void
+  onAdd: (nodeId: string, titles: string[]) => void
   onDelete: (nodeId: string) => void
 }
 
@@ -24,68 +26,48 @@ const NodePanel: React.FC<NodePanelProps> = ({
   x,
   y,
   width = 360,
-  height = 300,
+  height,
   nodeData,
   isVisible,
   onClose,
   onSubmit,
   onDelete,
+  onAdd,
 }) => {
-  const handleOnDelete = () => {
-      onDelete(nodeData.id)
+  const [tab, setTab] = React.useState<Tabs>(Tabs.MODIFY);
+  const handleOnAdd = (titles: string[]) => {
+    onAdd(nodeData.id, titles);
+  };
+
+  const renderForm = () => {
+    switch (tab) {
+      case Tabs.MODIFY:
+        return <ModifyNodeForm onDelete={onDelete} onSubmit={onSubmit} nodeData={nodeData} />
+      case Tabs.NEW_NODES:
+        return <GenerateNodeForm onSubmit={handleOnAdd} />
+        default:
+        return <ModifyNodeForm onDelete={onDelete} onSubmit={onSubmit} nodeData={nodeData} />
+    }
   }
+
   return (
+    <ThemeProvider>
     <div
       className={`${styles.nodePanel}${isVisible ? ` ${styles.visible}` : ''}`}
       style={{ top: y, left: x, width, height }}
     >
       <div className={styles.panelHeader}>
         <Title level={5} className={styles.title}>
-          Modify Node
+          Node Panel
         </Title>
         <span className={styles.cancelIcon} onClick={onClose} role={'button'}>
           &times;
         </span>
       </div>
-      <Form
-        name='basic'
-        labelCol={{ span: 24 }}
-        wrapperCol={{ span: 26 }}
-        className={styles.panelContent}
-        initialValues={{
-          label: nodeData.label,
-          completed: String(nodeData.completed),
-        }}
-        onFinish={onSubmit}
-        autoComplete='off'
-      >
-        <Form.Item
-          label='Title'
-          name='label'
-          rules={[{ required: true, message: 'Please input node title!' }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label='Completed'
-          name='completed'
-          rules={[{ required: true, message: 'Please select node status!' }]}
-        >
-          <Select>
-            <Option value={'true'}>Completed</Option>
-            <Option value={'false'}>To be completed</Option>
-          </Select>
-        </Form.Item>
-        <Form.Item wrapperCol={{ offset: 11, span: 24 }} className={styles.buttonGroup}>
-            <Button type='danger' htmlType="button" onClick={handleOnDelete}>
-            Delete
-            </Button>
-          <Button type='primary' htmlType='submit'>
-            Submit
-          </Button>
-        </Form.Item>
-      </Form>
+      <TabsComponent current={tab} setTab={setTab} />
+      {renderForm()}
     </div>
+    </ThemeProvider>
   )
 }
 
