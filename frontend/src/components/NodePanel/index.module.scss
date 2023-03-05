@@ -36,4 +36,12 @@
       margin: 0;
     }
   }
+
+  .buttonGroup {
+    :global {
+      .button {
+        @apply ml-2;
+      }
+    }
+  }
 }

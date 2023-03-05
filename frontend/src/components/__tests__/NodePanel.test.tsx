@@ -29,6 +29,7 @@ test('renders NodePanel with title and cancel icon', async () => {
       isVisible={true}
       onClose={onClose}
       onSubmit={() => 'onSubmit'}
+      onDelete={() => 'onDelete'}
     />,
   )
   const cancelButton = screen.getByRole('button', {
@@ -54,6 +55,7 @@ test('submits NodePanel form with new title and status', async () => {
       isVisible={true}
       onClose={() => 'onClose'}
       onSubmit={onSubmit}
+      onDelete={() => 'onDelete'}
     />,
   )
   const titleInput = screen.getByLabelText('Title')
@@ -71,3 +73,28 @@ test('submits NodePanel form with new title and status', async () => {
     completed: 'true',
   })
 })
+
+test('deletes NodePanel node', async () => {
+    const onDelete = jest.fn()
+    render(
+        <NodePanel
+            x={0}
+            y={0}
+            nodeData={nodeData}
+            isVisible={true}
+            onClose={() => 'onClose'}
+            onSubmit={() => 'onSubmit'}
+            onDelete={onDelete}
+        />,
+
+    )
+    const deleteButton = screen.getByRole('button', {
+        name: 'Delete',
+    })
+    expect(deleteButton).toBeInTheDocument()
+    await userEvent.click(deleteButton)
+    await waitFor(() => {
+        expect(onDelete).toHaveBeenCalledTimes(1)
+    })
+})
+

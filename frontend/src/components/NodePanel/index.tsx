@@ -17,6 +17,7 @@ interface NodePanelProps {
   isVisible: boolean
   onClose: () => void
   onSubmit: (values: Node) => void
+  onDelete: (nodeId: string) => void
 }
 
 const NodePanel: React.FC<NodePanelProps> = ({
@@ -28,7 +29,11 @@ const NodePanel: React.FC<NodePanelProps> = ({
   isVisible,
   onClose,
   onSubmit,
+  onDelete,
 }) => {
+  const handleOnDelete = () => {
+      onDelete(nodeData.id)
+  }
   return (
     <div
       className={`${styles.nodePanel}${isVisible ? ` ${styles.visible}` : ''}`}
@@ -71,7 +76,10 @@ const NodePanel: React.FC<NodePanelProps> = ({
             <Option value={'false'}>To be completed</Option>
           </Select>
         </Form.Item>
-        <Form.Item wrapperCol={{ offset: 18, span: 26 }}>
+        <Form.Item wrapperCol={{ offset: 11, span: 24 }} className={styles.buttonGroup}>
+            <Button type='danger' htmlType="button" onClick={handleOnDelete}>
+            Delete
+            </Button>
           <Button type='primary' htmlType='submit'>
             Submit
           </Button>
