@@ -21,7 +21,7 @@ afterAll(() => {
 })
 
 function install() {
-  const onSubmit = jest.fn()
+  const onModifySubmit = jest.fn()
   const onClose = jest.fn()
   const onDelete = jest.fn()
   const onAdd = jest.fn()
@@ -32,13 +32,13 @@ function install() {
       nodeData={nodeData}
       isVisible={true}
       onClose={onClose}
-      onSubmit={onSubmit}
+      onModifySubmit={onModifySubmit}
       onDelete={onDelete}
       onAdd={onAdd}
     />,
   )
   return {
-    onSubmit,
+    onModifySubmit,
     onClose,
     onDelete,
     onAdd,
@@ -61,7 +61,7 @@ test('renders NodePanel with title and cancel icon', async () => {
 })
 
 test('submits NodePanel form with new title and status', async () => {
-  const { onSubmit } = install()
+  const { onModifySubmit } = install()
 
   const titleInput = screen.getByLabelText('Title')
   const submitButton = screen.getByText('Submit')
@@ -71,9 +71,9 @@ test('submits NodePanel form with new title and status', async () => {
   await userEvent.click(submitButton)
 
   await waitFor(() => {
-    expect(onSubmit).toHaveBeenCalledTimes(1)
+    expect(onModifySubmit).toHaveBeenCalledTimes(1)
   })
-  expect(onSubmit).toHaveBeenCalledWith({
+  expect(onModifySubmit).toHaveBeenCalledWith({
     label: 'New Title',
     completed: 'true',
   })

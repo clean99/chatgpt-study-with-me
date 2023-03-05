@@ -9,7 +9,7 @@ import ThemeProvider from '../ThemeProvider'
 
 const { Title } = Typography
 
-interface NodePanelProps {
+export interface NodePanelProps {
   x: number
   y: number
   width?: number
@@ -17,7 +17,7 @@ interface NodePanelProps {
   nodeData: Node
   isVisible: boolean
   onClose: () => void
-  onSubmit: (values: Node) => void
+  onModifySubmit: (values: Node) => void
   onAdd: (nodeId: string, titles: string[]) => void
   onDelete: (nodeId: string) => void
 }
@@ -30,7 +30,7 @@ const NodePanel: React.FC<NodePanelProps> = ({
   nodeData,
   isVisible,
   onClose,
-  onSubmit,
+  onModifySubmit,
   onDelete,
   onAdd,
 }) => {
@@ -42,11 +42,11 @@ const NodePanel: React.FC<NodePanelProps> = ({
   const renderForm = () => {
     switch (tab) {
       case Tabs.MODIFY:
-        return <ModifyNodeForm onDelete={onDelete} onSubmit={onSubmit} nodeData={nodeData} />
+        return <ModifyNodeForm onDelete={onDelete} onSubmit={onModifySubmit} nodeData={nodeData} />
       case Tabs.NEW_NODES:
         return <GenerateNodeForm onSubmit={handleOnAdd} />
         default:
-        return <ModifyNodeForm onDelete={onDelete} onSubmit={onSubmit} nodeData={nodeData} />
+        return <ModifyNodeForm onDelete={onDelete} onSubmit={onModifySubmit} nodeData={nodeData} />
     }
   }
 
