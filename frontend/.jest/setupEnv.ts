@@ -6,4 +6,4 @@ window.matchMedia = window.matchMedia || function() {
         addListener : function() {},
         removeListener: function() {}
     };
-    };
+};

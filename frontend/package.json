@@ -30,9 +30,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --watchAll=false",
+    "test": "react-scripts test --watchAll=false --setupFilesAfterEnv=./.jest/setupEnv.ts",
     "test:watch": "react-scripts test --watch --setupFilesAfterEnv=./.jest/setupEnv.ts",
-    "test:cov": "react-scripts test --coverage --watchAll=false",
+    "test:cov": "react-scripts test --coverage --watchAll=false --setupFilesAfterEnv=./.jest/setupEnv.ts",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public",
