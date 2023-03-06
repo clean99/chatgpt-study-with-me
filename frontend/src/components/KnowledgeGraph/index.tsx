@@ -1,12 +1,13 @@
 import * as React from 'react'
-import { Network } from 'vis-network'
-import { DataSet } from 'vis-data/peer/esm/vis-data'
-import { Edge, Node } from '../../types/types'
+// eslint-disable-next-line
+// @ts-ignore  react-graph-vis don't have types yet.
+import Graph from 'react-graph-vis'
+import { Completed, Edge, Node } from '../../types/types'
 import NodePanel from '../NodePanel'
-import { eventEmit } from './events'
-
-const COMPLETED_COLOR = '#ff4d4f'
-const DEFAULT_COLOR = '#d9d9d9'
+import EditButton from './components/EditButton'
+import { onDoubleClick, onSelect } from './events'
+import { edgeFactory, edgeToVisEdge, eventWrapper, nodeFactory, nodeToVisNode } from './utils'
+import _ from 'lodash'
 
 interface KnowledgeGraphProps {
   data: {
@@ -22,84 +23,113 @@ const KnowledgeGraph: React.FC<KnowledgeGraphProps> = ({
   width = window.innerWidth,
   height = window.innerHeight,
 }) => {
-  const { nodes, edges } = data
+  const { nodes: defaultNodes, edges: defaultEdges } = data
   const [nodeId, setNodeId] = React.useState<string | null>(null)
   const [nodePanelXY, setNodePanelXY] = React.useState<{ x: number; y: number } | null>(null)
-  const nodeDataSet = new DataSet(nodes.map((node) => {
-    return {
-      id: node.id,
-      label: node.label,
-      color: node.completed ? COMPLETED_COLOR : DEFAULT_COLOR,
-    }
-  }))
-
-  const edgeDataSet =  new DataSet(edges.map((edge) => {
-    return {
-      id: edge.id,
-      from: edge.from,
-      to: edge.to,
-      arrows: 'to',
-    }
-  }))
-
-  const graphData = {
-    nodes: nodeDataSet,
-    edges: edgeDataSet,
+  const [editable, setEditable] = React.useState<boolean>(false)
+  // graph for api
+  const [graphData, setGraphData] = React.useState<{
+    nodes: Node[]
+    edges: Edge[]
+  }>({
+    nodes: defaultNodes,
+    edges: defaultEdges,
+  })
+  // graph for vis to render
+  const graph = {
+    nodes: graphData.nodes.map(nodeToVisNode),
+    edges: graphData.edges.map(edgeToVisEdge),
   }
 
   const options = {
     width: `${width}px`,
     height: `${height}px`,
-    manipulation: {
-      enabled: true,
+    nodes: {
+      shape: 'box',
     },
   }
 
-  const visJsRef = React.useRef<HTMLDivElement>(null)
+  const addNode = (node: Node) => {
+    setGraphData((prev) => ({
+      nodes: [...prev.nodes, node],
+      edges: prev.edges,
+    }))
+  }
 
   const handleClickNode = (nodeId: string | null, nodePanelXY?: { x: number; y: number }) => {
     setNodeId(nodeId)
     setNodePanelXY(nodePanelXY ?? null)
   }
-  const handleAddNode = (id: string, label: string) => {
-    nodeDataSet.add([{
-      id,
-      label,
-      color: DEFAULT_COLOR,
-    }])
-    return
+
+  const closeNodePanel = () => handleClickNode(null)
+
+  const handleAddNode = (label: string) => {
+    addNode(nodeFactory(label))
   }
 
-  React.useEffect(() => {
-    const network = visJsRef.current && new Network(visJsRef.current, graphData, options)
-    // Use `network` here to configure events, etc
-    eventEmit(network, handleClickNode, handleAddNode)
+  const hanldeAddNodesWithParent = (nodeId: string, titles: string[]) => {
+    closeNodePanel()
+    const newNodes = titles.map((title) => nodeFactory(title))
+    const newEdges = newNodes.map((node) => edgeFactory(nodeId, node.id))
+    setGraphData((prev) => ({
+      nodes: [...prev.nodes, ...newNodes],
+      edges: [...prev.edges, ...newEdges],
+    }))
+  }
 
-    return () => {
-      network?.destroy()
-    }
-  }, [visJsRef, nodes, edges])
+  const handleDeleteNode = (nodeId: string) => {
+    handleClickNode(null)
+    setGraphData((prev) => ({
+      nodes: prev.nodes.filter((node) => node.id !== nodeId),
+      edges: prev.edges.filter((edge) => edge.from !== nodeId && edge.to !== nodeId),
+    }))
+  }
+
+  const handleModifyNode = ({ label, completed }: Node) => {
+    closeNodePanel()
+    setGraphData((prev) => ({
+      nodes: prev.nodes.map((node) => {
+        if (node.id === nodeId) {
+          return {
+            ...node,
+            label,
+            completed,
+          }
+        }
+        return node
+      }),
+      edges: prev.edges,
+    }))
+  }
+
+  const events = {
+    select: eventWrapper(_.curryRight(onSelect)(handleClickNode), editable),
+    doubleClick: eventWrapper(_.curryRight(onDoubleClick)(handleAddNode), editable),
+  }
 
   return (
-    <>
-      <div ref={visJsRef} />
+    <div>
+      <Graph graph={graph} options={options} events={events} />
+      <EditButton editable={editable} setEditable={setEditable} />
       {nodeId && nodePanelXY && (
         <NodePanel
           x={nodePanelXY.x}
           y={nodePanelXY.y}
-          nodeData={nodes.find((node) => node.id === nodeId) ?? {
-            id: '',
-            label: '',
-            completed: false,
-          }}
+          nodeData={
+            graphData.nodes.find((node) => node.id === nodeId) ?? {
+              id: '',
+              label: '',
+              completed: Completed.NOT_COMPLETED,
+            }
+          }
           isVisible={!!nodeId}
-          onClose={() => handleClickNode(null)}
-          onModifySubmit={() => 'submit'}
-          onDelete={() => 'delete'}
-          onAdd={() => 'add'}
+          onClose={closeNodePanel}
+          onModifySubmit={handleModifyNode}
+          onDelete={handleDeleteNode}
+          onAdd={hanldeAddNodesWithParent}
         />
       )}
-    </>
+    </div>
   )
 }
 

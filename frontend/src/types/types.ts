@@ -15,6 +15,11 @@ export enum ThirdPartyType {
   GITHUB = 'github',
 }
 
+export enum Completed {
+  COMPLETED = 'true',
+  NOT_COMPLETED = 'false',
+}
+
 export interface UserInfo {
   email?: string
   id: string
@@ -28,7 +33,7 @@ export interface UserInfo {
 export interface Node {
   id: string
   label: string
-  completed: boolean
+  completed: Completed
 }
 
 export enum KnowledgeEdgeType {

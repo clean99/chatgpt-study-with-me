@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-import { Edge, KnowledgeEdgeType, Node } from '../../types/types'
+import { Completed, Edge, KnowledgeEdgeType, Node } from '../../types/types'
 import KnowledgeGraph from '../../components/KnowledgeGraph'
 
 export default {
@@ -10,9 +10,9 @@ export default {
 const Template: ComponentStory<typeof KnowledgeGraph> = (args) => <KnowledgeGraph {...args} />
 
 const nodes: Node[] = [
-  { id: 'node1', label: 'Node 1', completed: true },
-  { id: 'node2', label: 'Node 2', completed: false },
-  { id: 'node3', label: 'Node 3', completed: true },
+  { id: 'node1', label: 'Node 1', completed: Completed.COMPLETED },
+  { id: 'node2', label: 'Node 2', completed: Completed.NOT_COMPLETED },
+  { id: 'node3', label: 'Node 3', completed: Completed.COMPLETED },
 ]
 
 const edges: Edge[] = [

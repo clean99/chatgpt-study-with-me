@@ -34,39 +34,45 @@ const NodePanel: React.FC<NodePanelProps> = ({
   onDelete,
   onAdd,
 }) => {
-  const [tab, setTab] = React.useState<Tabs>(Tabs.MODIFY);
+  const [tab, setTab] = React.useState<Tabs>(Tabs.MODIFY)
   const handleOnAdd = (titles: string[]) => {
-    onAdd(nodeData.id, titles);
-  };
+    onAdd(nodeData.id, titles)
+  }
 
   const renderForm = () => {
     switch (tab) {
       case Tabs.MODIFY:
         return <ModifyNodeForm onDelete={onDelete} onSubmit={onModifySubmit} nodeData={nodeData} />
       case Tabs.NEW_NODES:
-        return <GenerateNodeForm onSubmit={handleOnAdd} />
-        default:
+        return <GenerateNodeForm onSubmit={handleOnAdd} nodeId={nodeData.id} />
+      default:
         return <ModifyNodeForm onDelete={onDelete} onSubmit={onModifySubmit} nodeData={nodeData} />
     }
   }
 
+  React.useEffect(() => {
+    if (isVisible) {
+      setTab(Tabs.MODIFY)
+    }
+  }, [isVisible, nodeData.id])
+
   return (
     <ThemeProvider>
-    <div
-      className={`${styles.nodePanel}${isVisible ? ` ${styles.visible}` : ''}`}
-      style={{ top: y, left: x, width, height }}
-    >
-      <div className={styles.panelHeader}>
-        <Title level={5} className={styles.title}>
-          Node Panel
-        </Title>
-        <span className={styles.cancelIcon} onClick={onClose} role={'button'}>
-          &times;
-        </span>
+      <div
+        className={`${styles.nodePanel}${isVisible ? ` ${styles.visible}` : ''}`}
+        style={{ top: y, left: x, width, height }}
+      >
+        <div className={styles.panelHeader}>
+          <Title level={5} className={styles.title}>
+            Node Panel
+          </Title>
+          <span className={styles.cancelIcon} onClick={onClose} role={'button'}>
+            &times;
+          </span>
+        </div>
+        <TabsComponent current={tab} setTab={setTab} />
+        {renderForm()}
       </div>
-      <TabsComponent current={tab} setTab={setTab} />
-      {renderForm()}
-    </div>
     </ThemeProvider>
   )
 }

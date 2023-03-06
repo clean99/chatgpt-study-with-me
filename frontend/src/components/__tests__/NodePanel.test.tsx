@@ -2,11 +2,12 @@ import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import NodePanel from '../NodePanel'
+import { Completed } from '../../types/types'
 
 const nodeData = {
   id: '1',
   label: 'Node 1',
-  completed: true,
+  completed: Completed.COMPLETED,
 }
 
 beforeAll(() => {
@@ -75,19 +76,19 @@ test('submits NodePanel form with new title and status', async () => {
   })
   expect(onModifySubmit).toHaveBeenCalledWith({
     label: 'New Title',
-    completed: 'true',
+    completed: Completed.COMPLETED,
   })
 })
 
 test('deletes NodePanel node', async () => {
   const { onDelete } = install()
 
-    const deleteButton = screen.getByRole('button', {
-        name: 'Delete',
-    })
-    expect(deleteButton).toBeInTheDocument()
-    await userEvent.click(deleteButton)
-    expect(onDelete).toHaveBeenCalledTimes(1)
+  const deleteButton = screen.getByRole('button', {
+    name: 'Delete',
+  })
+  expect(deleteButton).toBeInTheDocument()
+  await userEvent.click(deleteButton)
+  expect(onDelete).toHaveBeenCalledTimes(1)
 })
 
 test('adds node', async () => {
@@ -96,7 +97,7 @@ test('adds node', async () => {
   await userEvent.click(screen.getByText('New Nodes'))
 
   const addButton = screen.getByRole('button', {
-      name: /plus Add field/i,
+    name: /plus add field/i,
   })
   expect(addButton).toBeInTheDocument()
   await userEvent.click(addButton)
@@ -108,9 +109,5 @@ test('adds node', async () => {
   await waitFor(() => {
     expect(onAdd).toHaveBeenCalledTimes(1)
   })
-  expect(onAdd).toHaveBeenCalledWith(nodeData.id, [
-    'New Node',
-    'New Node 2',
-  ])
+  expect(onAdd).toHaveBeenCalledWith(nodeData.id, ['New Node', 'New Node 2'])
 })
-

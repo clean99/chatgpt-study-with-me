@@ -16,7 +16,7 @@ const Button: React.FC<ButtonProps> = ({
   onClick,
   children,
   disabled,
-  htmlType = 'button'
+  htmlType = 'button',
 }) => {
   const classNames = `button button--${type} button--${size}`
 

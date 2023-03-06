@@ -2,6 +2,7 @@ import * as React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import NodePanel from '../../components/NodePanel'
 import Button from '../../components/Button'
+import { Completed as CompletedType } from '../../types/types'
 
 export default {
   title: 'Components/NodePanel',
@@ -21,7 +22,7 @@ const Template: ComponentStory<typeof NodePanel> = (args) => {
 const nodeData = {
   id: 'node1',
   label: 'Node 1',
-  completed: false,
+  completed: CompletedType.NOT_COMPLETED,
 }
 
 export const Default = Template.bind({})
@@ -38,7 +39,7 @@ Completed.args = {
   ...Default.args,
   nodeData: {
     ...nodeData,
-    completed: true,
+    completed: CompletedType.COMPLETED,
   },
 }
 

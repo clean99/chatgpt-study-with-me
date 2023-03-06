@@ -1,22 +1,22 @@
-import * as React from 'react';
-import styles from './index.module.scss';
+import * as React from 'react'
+import styles from './index.module.scss'
 
 // Define the Tabs enum
 export enum Tabs {
   MODIFY,
   NEW_NODES,
-};
+}
 
 // Define the TabsComponent props
 interface TabsComponentProps {
-    current: Tabs;
-    setTab: (tab: Tabs) => void;
+  current: Tabs
+  setTab: (tab: Tabs) => void
 }
 
 const TabsComponent: React.FC<TabsComponentProps> = ({ current, setTab }) => {
   const handleClick = (tab: Tabs) => {
-    setTab(tab);
-  };
+    setTab(tab)
+  }
 
   return (
     <div className={styles.tabs}>
@@ -35,7 +35,7 @@ const TabsComponent: React.FC<TabsComponentProps> = ({ current, setTab }) => {
         </li>
       </ul>
     </div>
-  );
+  )
 }
 
-export default TabsComponent;
+export default TabsComponent
