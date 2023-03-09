@@ -2,7 +2,7 @@ import * as React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import EditButton from '../KnowledgeGraph/components/EditButton'
-import { onSelect, onDoubleClick } from '../KnowledgeGraph/events'
+import { onDoubleClick } from '../KnowledgeGraph/graphConfig/events'
 import { Completed, Edge, KnowledgeEdgeType, Node } from '../../types/types'
 import { VisNode, VisEdge, VisNodeColor } from '../KnowledgeGraph/type'
 import {
@@ -20,9 +20,23 @@ describe('EditButton', () => {
   })
 
   it('should render correct text', () => {
-    const { rerender } = render(<EditButton editable={true} setEditable={() => 'set edit'} editableText='cool' notEditableText='good' />)
+    const { rerender } = render(
+      <EditButton
+        editable={true}
+        setEditable={() => 'set edit'}
+        editableText='cool'
+        notEditableText='good'
+      />,
+    )
     expect(screen.getByRole('button')).toHaveTextContent('cool')
-    rerender(<EditButton editable={false} setEditable={() => 'set edit'} editableText='cool' notEditableText='good' />)
+    rerender(
+      <EditButton
+        editable={false}
+        setEditable={() => 'set edit'}
+        editableText='cool'
+        notEditableText='good'
+      />,
+    )
     expect(screen.getByRole('button')).toHaveTextContent('good')
   })
 
@@ -46,22 +60,27 @@ describe('EditButton', () => {
 })
 
 describe('onDoubleClick', () => {
+  const addNode = jest.fn()
+  const setNodeId = jest.fn()
+  const store = {
+    addNode,
+    setNodeId,
+  }
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
   it('should call handleAddNode with a new node label when no nodes are selected', () => {
-    const handleAddNode = jest.fn()
-    const handleClickNode = jest.fn()
     const e = { nodes: [] }
-    onDoubleClick(e, handleAddNode, handleClickNode)
-    expect(handleAddNode).toHaveBeenCalledWith('New Node')
-    expect(handleClickNode).not.toBeCalled()
+    onDoubleClick(e, store as any)
+    expect(addNode).toHaveBeenCalledWith({completed: 'false', id: expect.any(String), label: 'New Node'})
+    expect(setNodeId).not.toBeCalled()
   })
 
   it('should not call handleAddNode but call handleClickNode with node when nodes are selected', () => {
-    const handleAddNode = jest.fn()
-    const handleClickNode = jest.fn()
     const e = { nodes: ['1'] }
-    onDoubleClick(e, handleAddNode,handleClickNode)
-    expect(handleAddNode).not.toHaveBeenCalled()
-    expect(handleClickNode).toHaveBeenCalledWith('1')
+    onDoubleClick(e, store as any)
+    expect(addNode).not.toHaveBeenCalled()
+    expect(setNodeId).toHaveBeenCalledWith('1')
   })
 })
 

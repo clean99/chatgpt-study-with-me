@@ -9,7 +9,12 @@ interface EditButtonProps {
   notEditableText?: string
 }
 
-const EditButton: React.FC<EditButtonProps> = ({ editable, setEditable, editableText = 'Save', notEditableText = 'Edit' }) => {
+const EditButton: React.FC<EditButtonProps> = ({
+  editable,
+  setEditable,
+  editableText = 'Save',
+  notEditableText = 'Edit',
+}) => {
   return (
     <div className={styles.editableButton}>
       <Button type='primary' onClick={() => setEditable(!editable)}>

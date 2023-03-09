@@ -1,14 +1,18 @@
 import * as React from 'react'
 // eslint-disable-next-line
 // @ts-ignore  react-graph-vis don't have types yet.
-import Graph, { Edge as OVisEdge } from 'react-graph-vis'
+import Graph from 'react-graph-vis'
 import { Completed, Edge, Node } from '../../types/types'
 import NodePanel from '../NodePanel'
 import EditButton from './components/EditButton'
-import { onDoubleClick } from './events'
-import { edgeFactory, edgeToVisEdge, eventWrapper, nodeFactory, nodeToVisNode } from './utils'
-import _ from 'lodash'
+import { edgeToVisEdge, nodeToVisNode } from './utils'
 import styles from './index.module.scss'
+import { v4 as uuidv4 } from 'uuid'
+import KnowledgeGraphStore from './store'
+import { optionGenerator } from './graphConfig/option'
+import { onDoubleClick } from './graphConfig/events'
+import _ from 'lodash'
+import { observer } from 'mobx-react-lite'
 
 interface KnowledgeGraphProps {
   data: {
@@ -24,163 +28,75 @@ const KnowledgeGraph: React.FC<KnowledgeGraphProps> = ({
   width = window.innerWidth,
   height = window.innerHeight,
 }) => {
+  const store = React.useContext(Context)
+  console.log(store)
+  React.useEffect(() => {
+    store.setEditable(true)
+  }, [data.nodes, store])
+
   const network = React.useRef<any>(null)
-  const { nodes: defaultNodes, edges: defaultEdges } = data
-  const [nodeId, setNodeId] = React.useState<string | null>(null)
-  const [editable, setEditable] = React.useState<boolean>(false)
-  // graph for api
-  const [graphData, setGraphData] = React.useState<{
-    nodes: Node[]
-    edges: Edge[]
-  }>({
-    nodes: defaultNodes,
-    edges: defaultEdges,
-  })
-  // graph for vis to render
-  const graph = {
-    nodes: graphData.nodes.map(nodeToVisNode),
-    edges: graphData.edges.map(edgeToVisEdge),
-  }
-
-  const options = {
-    width: `${width}px`,
-    height: `${height}px`,
-    nodes: {
-      shape: 'box',
-    },
-    edges: {
-      arrows: {
-        to: {
-          enabled: true,
-        },
-      },
-      smooth: {
-        enabled: true,
-        type: 'dynamic',
-        roundness: 0.5,
-      },
-    },
-    manipulation: {
-      addEdge: (data: OVisEdge, callback: (edge: OVisEdge) => void) => {
-        console.warn('addEdge', data);
-        if (data.from == data.to) {
-          return;
-        }
-        const edge = { ...data, id: Math.random() };
-        setGraphData((prev) => ({
-          nodes: prev.nodes,
-          edges: [...prev.edges, edge],
-        }));
-        callback(edge);
-      },
-    },
-  };
-
-  const addNode = (node: Node) => {
-    setGraphData((prev) => ({
-      nodes: [...prev.nodes, node],
-      edges: prev.edges,
-    }))
-  }
-
-  const handleClickNode = (nodeId: string | null) => {
-    setNodeId(nodeId)
-  }
-
-  const closeNodePanel = () => handleClickNode(null)
-  
-  const handleGetNetwork = (newNetwork: any) => {
-    network.current = newNetwork;
-  }
-
-  const handleAddNode = (label: string) => {
-    addNode(nodeFactory(label))
-  }
-
-  const hanldeAddNodesWithParent = (nodeId: string, titles: string[]) => {
-    closeNodePanel()
-    const newNodes = titles.map((title) => nodeFactory(title))
-    const newEdges = newNodes.map((node) => edgeFactory(nodeId, node.id))
-    setGraphData((prev) => ({
-      nodes: [...prev.nodes, ...newNodes],
-      edges: [...prev.edges, ...newEdges],
-    }))
-  }
-
-  const handleDeleteNode = (nodeId: string) => {
-    handleClickNode(null)
-    setGraphData((prev) => ({
-      nodes: prev.nodes.filter((node) => node.id !== nodeId),
-      edges: prev.edges.filter((edge) => edge.from !== nodeId && edge.to !== nodeId),
-    }))
-  }
-
-  const handleModifyNode = ({ label, completed }: Node) => {
-    closeNodePanel()
-    setGraphData((prev) => ({
-      nodes: prev.nodes.map((node) => {
-        if (node.id === nodeId) {
-          return {
-            ...node,
-            label,
-            completed,
-          }
-        }
-        return node
-      }),
-      edges: prev.edges,
-    }))
-  }
-
+  const options = React.useMemo(() => optionGenerator(width, height, store.addEdge), [width, height])
   const events = {
-    doubleClick: eventWrapper(_.curryRight(onDoubleClick)(handleClickNode)(handleAddNode), editable),
-    DragEvent: {
-      dragEnd: (event: any) => {
-        console.log(event);
-      },
-      dragStart: (event: any) => {
-        console.log(event);
-      }
-
-    }
+    doubleClick: _.curryRight(onDoubleClick)(store)
   }
 
   React.useEffect(() => {
     if (network.current) {
-      if(editable) {
+      if (store.editable) {
         network.current.addEdgeMode()
       } else {
         network.current.disableEditMode()
       }
     }
-  }, [network, editable, graphData])
+  }, [network, store.editable, store.nodes, store.edges])
+
+  const graph = {
+    nodes: store.nodes.map(nodeToVisNode),
+    edges: store.edges.map(edgeToVisEdge),
+  }
 
   return (
     <div>
-      <Graph graph={graph} options={options} events={events} getNetwork={handleGetNetwork} />
+      <Graph
+        key={uuidv4()}
+        graph={graph}
+        options={options}
+        events={events}
+        getNetwork={(newNetwork: any) => {
+          network.current = newNetwork
+        }}
+      />
       <div className={styles.toolbar}>
-        <EditButton editable={editable} setEditable={setEditable} />
+        <EditButton editable={store.editable} setEditable={store.setEditable} />
       </div>
-      {nodeId && (
+      {store.nodeId && (
         <NodePanel
           x={10}
           y={10}
           nodeData={
-            graphData.nodes.find((node) => node.id === nodeId) ?? {
+            store.nodes.find((node) => node.id === store.nodeId) ?? {
               id: '',
               label: '',
               completed: Completed.NOT_COMPLETED,
             }
           }
-          isVisible={!!nodeId}
-          onClose={closeNodePanel}
-          onModifySubmit={handleModifyNode}
-          onDelete={handleDeleteNode}
-          onAdd={hanldeAddNodesWithParent}
+          isVisible={!!store.nodeId}
+          onClose={store.clearNodeId}
+          onModifySubmit={store.modifyNode}
+          onDelete={store.deleteNode}
+          onAdd={store.addNodesWithParent}
         />
       )}
     </div>
   )
 }
 
-export default KnowledgeGraph
+const Context = React.createContext<KnowledgeGraphStore>(new KnowledgeGraphStore({ nodes: [], edges: [] }))
+
+const KnowledgeGraphWithStore: React.FC<KnowledgeGraphProps> = (props) => (
+  <Context.Provider value={new KnowledgeGraphStore({ nodes: props.data.nodes, edges: props.data.edges })}>
+    <KnowledgeGraph {...props} />
+  </Context.Provider>
+)
+
+export default observer(KnowledgeGraphWithStore)
