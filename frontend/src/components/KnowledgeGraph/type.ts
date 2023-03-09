@@ -10,6 +10,7 @@ export interface VisNode {
 }
 
 export interface VisEdge {
+  id: string // VisEdge ID
   from: string // VisNode ID
   to: string // VisNode ID
 }

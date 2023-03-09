@@ -1,13 +1,14 @@
 import * as React from 'react'
 // eslint-disable-next-line
 // @ts-ignore  react-graph-vis don't have types yet.
-import Graph from 'react-graph-vis'
+import Graph, { Edge as OVisEdge } from 'react-graph-vis'
 import { Completed, Edge, Node } from '../../types/types'
 import NodePanel from '../NodePanel'
 import EditButton from './components/EditButton'
-import { onDoubleClick, onSelect } from './events'
+import { onDoubleClick } from './events'
 import { edgeFactory, edgeToVisEdge, eventWrapper, nodeFactory, nodeToVisNode } from './utils'
 import _ from 'lodash'
+import styles from './index.module.scss'
 
 interface KnowledgeGraphProps {
   data: {
@@ -23,9 +24,9 @@ const KnowledgeGraph: React.FC<KnowledgeGraphProps> = ({
   width = window.innerWidth,
   height = window.innerHeight,
 }) => {
+  const network = React.useRef<any>(null)
   const { nodes: defaultNodes, edges: defaultEdges } = data
   const [nodeId, setNodeId] = React.useState<string | null>(null)
-  const [nodePanelXY, setNodePanelXY] = React.useState<{ x: number; y: number } | null>(null)
   const [editable, setEditable] = React.useState<boolean>(false)
   // graph for api
   const [graphData, setGraphData] = React.useState<{
@@ -47,7 +48,33 @@ const KnowledgeGraph: React.FC<KnowledgeGraphProps> = ({
     nodes: {
       shape: 'box',
     },
-  }
+    edges: {
+      arrows: {
+        to: {
+          enabled: true,
+        },
+      },
+      smooth: {
+        enabled: true,
+        type: 'dynamic',
+        roundness: 0.5,
+      },
+    },
+    manipulation: {
+      addEdge: (data: OVisEdge, callback: (edge: OVisEdge) => void) => {
+        console.warn('addEdge', data);
+        if (data.from == data.to) {
+          return;
+        }
+        const edge = { ...data, id: Math.random() };
+        setGraphData((prev) => ({
+          nodes: prev.nodes,
+          edges: [...prev.edges, edge],
+        }));
+        callback(edge);
+      },
+    },
+  };
 
   const addNode = (node: Node) => {
     setGraphData((prev) => ({
@@ -56,12 +83,15 @@ const KnowledgeGraph: React.FC<KnowledgeGraphProps> = ({
     }))
   }
 
-  const handleClickNode = (nodeId: string | null, nodePanelXY?: { x: number; y: number }) => {
+  const handleClickNode = (nodeId: string | null) => {
     setNodeId(nodeId)
-    setNodePanelXY(nodePanelXY ?? null)
   }
 
   const closeNodePanel = () => handleClickNode(null)
+  
+  const handleGetNetwork = (newNetwork: any) => {
+    network.current = newNetwork;
+  }
 
   const handleAddNode = (label: string) => {
     addNode(nodeFactory(label))
@@ -103,18 +133,38 @@ const KnowledgeGraph: React.FC<KnowledgeGraphProps> = ({
   }
 
   const events = {
-    select: eventWrapper(_.curryRight(onSelect)(handleClickNode), editable),
-    doubleClick: eventWrapper(_.curryRight(onDoubleClick)(handleAddNode), editable),
+    doubleClick: eventWrapper(_.curryRight(onDoubleClick)(handleClickNode)(handleAddNode), editable),
+    DragEvent: {
+      dragEnd: (event: any) => {
+        console.log(event);
+      },
+      dragStart: (event: any) => {
+        console.log(event);
+      }
+
+    }
   }
+
+  React.useEffect(() => {
+    if (network.current) {
+      if(editable) {
+        network.current.addEdgeMode()
+      } else {
+        network.current.disableEditMode()
+      }
+    }
+  }, [network, editable, graphData])
 
   return (
     <div>
-      <Graph graph={graph} options={options} events={events} />
-      <EditButton editable={editable} setEditable={setEditable} />
-      {nodeId && nodePanelXY && (
+      <Graph graph={graph} options={options} events={events} getNetwork={handleGetNetwork} />
+      <div className={styles.toolbar}>
+        <EditButton editable={editable} setEditable={setEditable} />
+      </div>
+      {nodeId && (
         <NodePanel
-          x={nodePanelXY.x}
-          y={nodePanelXY.y}
+          x={10}
+          y={10}
           nodeData={
             graphData.nodes.find((node) => node.id === nodeId) ?? {
               id: '',

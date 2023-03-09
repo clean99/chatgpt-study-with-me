@@ -1,3 +1,8 @@
-.editableButton {
+.toolbar {
     @apply fixed top-2 right-2;
+    @apply flex flex-row items-center justify-between;
+    @apply m-2;
+    .editableButton {
+        @apply ml-2;
+    }
 }

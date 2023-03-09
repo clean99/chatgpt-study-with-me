@@ -21,6 +21,7 @@ export function nodeToVisNode(node: Node): VisNode {
 
 export function edgeToVisEdge(edge: Edge): VisEdge {
   return {
+    id: edge.id,
     from: edge.from,
     to: edge.to,
   }

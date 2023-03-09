@@ -5,13 +5,15 @@ import styles from '../index.module.scss'
 interface EditButtonProps {
   editable: boolean
   setEditable: (editable: boolean) => void
+  editableText?: string
+  notEditableText?: string
 }
 
-const EditButton: React.FC<EditButtonProps> = ({ editable, setEditable }) => {
+const EditButton: React.FC<EditButtonProps> = ({ editable, setEditable, editableText = 'Save', notEditableText = 'Edit' }) => {
   return (
     <div className={styles.editableButton}>
       <Button type='primary' onClick={() => setEditable(!editable)}>
-        {editable ? 'Save' : 'Edit'}
+        {editable ? editableText : notEditableText}
       </Button>
     </div>
   )

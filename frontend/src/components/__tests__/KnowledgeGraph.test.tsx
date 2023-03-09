@@ -19,6 +19,13 @@ describe('EditButton', () => {
     expect(screen.getByRole('button')).toBeInTheDocument()
   })
 
+  it('should render correct text', () => {
+    const { rerender } = render(<EditButton editable={true} setEditable={() => 'set edit'} editableText='cool' notEditableText='good' />)
+    expect(screen.getByRole('button')).toHaveTextContent('cool')
+    rerender(<EditButton editable={false} setEditable={() => 'set edit'} editableText='cool' notEditableText='good' />)
+    expect(screen.getByRole('button')).toHaveTextContent('good')
+  })
+
   it('should show "Edit" when not editable', () => {
     render(<EditButton editable={false} setEditable={() => 'set edit'} />)
     expect(screen.getByRole('button')).toHaveTextContent('Edit')
@@ -38,45 +45,23 @@ describe('EditButton', () => {
   })
 })
 
-describe('onSelect', () => {
-  it('should call handleClickNode with node and pointer coordinates when nodes exist', () => {
-    const handleClickNode = jest.fn()
-    const e = {
-      nodes: ['1'],
-      pointer: {
-        DOM: { x: 100, y: 200 },
-      },
-    }
-    onSelect(e, handleClickNode)
-    expect(handleClickNode).toHaveBeenCalledWith('1', { x: 100, y: 200 })
-  })
-
-  it('should call handleClickNode with null when no nodes exist', () => {
-    const handleClickNode = jest.fn()
-    const e = {
-      nodes: [],
-      pointer: {
-        DOM: { x: 100, y: 200 },
-      },
-    }
-    onSelect(e, handleClickNode)
-    expect(handleClickNode).toHaveBeenCalledWith(null)
-  })
-})
-
 describe('onDoubleClick', () => {
   it('should call handleAddNode with a new node label when no nodes are selected', () => {
     const handleAddNode = jest.fn()
+    const handleClickNode = jest.fn()
     const e = { nodes: [] }
-    onDoubleClick(e, handleAddNode)
+    onDoubleClick(e, handleAddNode, handleClickNode)
     expect(handleAddNode).toHaveBeenCalledWith('New Node')
+    expect(handleClickNode).not.toBeCalled()
   })
 
-  it('should not call handleAddNode when nodes are selected', () => {
+  it('should not call handleAddNode but call handleClickNode with node when nodes are selected', () => {
     const handleAddNode = jest.fn()
+    const handleClickNode = jest.fn()
     const e = { nodes: ['1'] }
-    onDoubleClick(e, handleAddNode)
+    onDoubleClick(e, handleAddNode,handleClickNode)
     expect(handleAddNode).not.toHaveBeenCalled()
+    expect(handleClickNode).toHaveBeenCalledWith('1')
   })
 })
 
@@ -121,6 +106,7 @@ describe('edgeToVisEdge', () => {
       type: KnowledgeEdgeType.HAS_KNOWLEDGE,
     }
     const expectedVisEdge: VisEdge = {
+      id: '456',
       from: 'node1',
       to: 'node2',
     }
