@@ -19,12 +19,14 @@ export const optionGenerator = (width: number, height: number, addEdge: (data: a
         roundness: 0.5,
       },
     },
-    manipulation:{
-      addEdge: (data: EdgeFromTo) => {
+    manipulation: {
+      //  must give a callback or it will throw an error
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars 
+      addEdge: (data: EdgeFromTo, callback: (data: any) => void) => {
         if (!addEdgeValidator(edges, data)) {
-          return
+          return;
         }
         addEdge(data);
-      },
+      }
     }
 })
