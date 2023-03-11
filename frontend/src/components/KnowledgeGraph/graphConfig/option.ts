@@ -1,4 +1,4 @@
-import { Edge } from '../../../types/types';
+import { Edge, EdgeFromTo } from '../../../types/types';
 import { addEdgeValidator } from '../utils';
 
 export const optionGenerator = (width: number, height: number, addEdge: (data: any) => void, edges: Edge[]) => ({
@@ -20,12 +20,11 @@ export const optionGenerator = (width: number, height: number, addEdge: (data: a
       },
     },
     manipulation:{
-      addEdge: (data: any, callback: any) => {
+      addEdge: (data: EdgeFromTo) => {
         if (!addEdgeValidator(edges, data)) {
           return
         }
         addEdge(data);
-        callback(data);
       },
     }
 })

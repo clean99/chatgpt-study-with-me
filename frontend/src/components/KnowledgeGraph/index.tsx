@@ -7,7 +7,6 @@ import NodePanel from '../NodePanel'
 import EditButton from './components/EditButton'
 import { edgeToVisEdge, nodeToVisNode } from './utils'
 import styles from './index.module.scss'
-import { v4 as uuidv4 } from 'uuid'
 import KnowledgeGraphStore from './store'
 import { optionGenerator } from './graphConfig/option'
 import { onDoubleClick } from './graphConfig/events'
@@ -53,7 +52,6 @@ const KnowledgeGraph: React.FC<KnowledgeGraphProps> = observer(({
   return (
     <div>
       <Graph
-        key={uuidv4()}
         graph={graph}
         options={options}
         events={events}
