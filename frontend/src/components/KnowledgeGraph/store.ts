@@ -8,6 +8,7 @@ class KnowledgeGraphStore {
   edges: Edge[] = []
 
   nodeId: string | null = null
+  edgeId: string | null = null
   editable = false
 
   constructor(data: { nodes: Node[]; edges: Edge[] }) {
@@ -23,6 +24,14 @@ class KnowledgeGraphStore {
 
   clearNodeId() {
     this.setNodeId(null)
+  }
+
+  setEdgeId(edgeId: string | null) {
+    this.edgeId = edgeId
+  }
+
+  clearEdgeId() {
+    this.setEdgeId(null)
   }
 
   setEditable(editable: boolean) {
@@ -42,6 +51,11 @@ class KnowledgeGraphStore {
     this.nodes = this.nodes.filter((node) => node.id !== nodeId)
     this.edges = this.edges.filter((edge) => edge.from !== nodeId && edge.to !== nodeId)
     this.clearNodeId()
+  }
+
+  deleteEdge(edgeId: string) {
+    this.edges = this.edges.filter((edge) => edge.id !== edgeId)
+    this.clearEdgeId()
   }
 
   modifyNode({ label, completed }: Pick<Node, 'label' | 'completed'>) {

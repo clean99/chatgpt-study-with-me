@@ -24,6 +24,23 @@ describe('KnowledgeGraphStore', () => {
     expect(store.nodeId).toBe('node1')
   })
 
+  it('should clear nodeId', () => {
+    store.setNodeId('node1')
+    store.clearNodeId()
+    expect(store.nodeId).toBeNull()
+  })
+
+  it('should set edgeId', () => {
+    store.setEdgeId('edge1')
+    expect(store.edgeId).toBe('edge1')
+  })
+
+  it('should clear edgeId', () => {
+    store.setEdgeId('edge1')
+    store.clearEdgeId()
+    expect(store.edgeId).toBeNull()
+  })
+
   it('should set editable', () => {
     store.setEditable(true)
     expect(store.editable).toBe(true)
@@ -49,6 +66,14 @@ describe('KnowledgeGraphStore', () => {
     expect(store.nodes.length).toBe(2)
     expect(store.nodes.find((node) => node.id === 'node1')).toBeUndefined()
     expect(store.edges.length).toBe(0)
+  })
+
+  it('should delete edge', () => {
+    store.setEdgeId('edge1')
+    store.deleteEdge('edge1')
+    expect(store.edgeId).toBeNull()
+    expect(store.edges.length).toBe(1)
+    expect(store.edges.find((edge) => edge.id === 'edge1')).toBeUndefined()
   })
 
   it('should modify node', () => {

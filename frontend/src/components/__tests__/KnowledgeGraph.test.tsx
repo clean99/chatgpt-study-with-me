@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import EditButton from '../KnowledgeGraph/components/EditButton'
-import { onDoubleClick } from '../KnowledgeGraph/graphConfig/events'
+import EditButton from '../KnowledgeGraph/components/ToolBar.tsx/EditButton'
+import { onDoubleClick, onSelect } from '../KnowledgeGraph/graphConfig/events'
 import { Completed, Edge, KnowledgeEdgeType, Node } from '../../types/types'
 import { VisNode, VisEdge, VisNodeColor } from '../KnowledgeGraph/type'
 import {
@@ -84,6 +84,33 @@ describe('onDoubleClick', () => {
     onDoubleClick(e, store as any)
     expect(addNode).not.toHaveBeenCalled()
     expect(setNodeId).toHaveBeenCalledWith('1')
+  })
+})
+
+describe('onSelect', () => {
+  const setEdgeId = jest.fn()
+  const clearEdgeId = jest.fn()
+  const store = {
+    setEdgeId,
+    clearEdgeId,
+  }
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it('should call setEdgeId with the edge id when an edge is selected', () => {
+    const e = { edges: ['1'] }
+    onSelect(e, store as any)
+    expect(setEdgeId).toHaveBeenCalledWith('1')
+    expect(clearEdgeId).not.toBeCalled()
+  })
+
+  it('should call clearEdgeId when no edges are selected', () => {
+    const e = { edges: [] }
+    onSelect(e, store as any)
+    expect(clearEdgeId).toBeCalled()
+    expect(setEdgeId).not.toBeCalled()
   })
 })
 

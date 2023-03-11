@@ -27,6 +27,6 @@ export const optionGenerator = (width: number, height: number, addEdge: (data: a
           return;
         }
         addEdge(data);
-      }
+      },
     }
 })

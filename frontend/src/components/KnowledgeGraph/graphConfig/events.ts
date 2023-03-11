@@ -9,3 +9,10 @@ export function onDoubleClick(e: any, store: KnowledgeGraphStore) {
     store.addNode(nodeFactory('New Node'))
   }
 }
+
+export function onSelect(event: any, store: KnowledgeGraphStore) {
+  if (event.edges.length > 0) {
+    return store.setEdgeId(event.edges[0])
+  }
+  store.clearEdgeId()
+}

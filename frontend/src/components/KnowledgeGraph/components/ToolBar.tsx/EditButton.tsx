@@ -1,6 +1,6 @@
 import * as React from 'react'
-import Button from '../../Button'
-import styles from '../index.module.scss'
+import Button from '../../../Button'
+import styles from '../../index.module.scss'
 
 interface EditButtonProps {
   editable: boolean
