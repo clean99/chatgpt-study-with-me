@@ -61,7 +61,6 @@ class KnowledgeGraphStore {
   modifyNode({ label, completed }: Pick<Node, 'label' | 'completed'>) {
     this.nodes = this.nodes.map((node) => {
       if (node.id === this.nodeId) {
-        
         return {
           ...node,
           label,

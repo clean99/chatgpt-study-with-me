@@ -65,9 +65,9 @@ const GenerateNodeForm: React.FC<GenerateNodeFormProps> = ({ onSubmit, nodeId })
                   <Input placeholder='node title' className='w-11/12 mr-2' />
                 </Form.Item>
                 <MinusCircleOutlined
-                    className='dynamic-delete-button'
-                    onClick={() => remove(field.name)}
-                  />
+                  className='dynamic-delete-button'
+                  onClick={() => remove(field.name)}
+                />
               </Form.Item>
             ))}
             {fields.length < MAX_NODES && (

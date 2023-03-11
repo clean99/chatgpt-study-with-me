@@ -1,20 +1,25 @@
-
-import * as React from 'react';
-import EditButton from './EditButton';
-import styles from '../../index.module.scss';
-import Button from '../../../Button';
-import KnowledgeGraphStore from '../../store';
-import { observer } from 'mobx-react-lite';
+import * as React from 'react'
+import EditButton from './EditButton'
+import styles from '../../index.module.scss'
+import Button from '../../../Button'
+import KnowledgeGraphStore from '../../store'
+import { observer } from 'mobx-react-lite'
 
 interface ToolBarProps {
-    store: KnowledgeGraphStore;
+  store: KnowledgeGraphStore
 }
 
 const ToolBar: React.FC<ToolBarProps> = observer(({ store }) => {
-    return (<div className={styles.toolbar}>
-        {store.editable && store.edgeId && <Button type='danger' onClick={() => store.deleteEdge(store.edgeId ?? '')}>Delete Edge</Button>}
-        <EditButton editable={store.editable} setEditable={store.setEditable} />
-      </div>);
-});
+  return (
+    <div className={styles.toolbar}>
+      {store.editable && store.edgeId && (
+        <Button type='danger' onClick={() => store.deleteEdge(store.edgeId ?? '')}>
+          Delete Edge
+        </Button>
+      )}
+      <EditButton editable={store.editable} setEditable={store.setEditable} />
+    </div>
+  )
+})
 
-export default ToolBar;
+export default ToolBar

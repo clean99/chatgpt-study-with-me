@@ -75,7 +75,11 @@ describe('onDoubleClick', () => {
   it('should call handleAddNode with a new node label when no nodes are selected', () => {
     const e = { nodes: [] }
     onDoubleClick(e, store as any)
-    expect(addNode).toHaveBeenCalledWith({completed: 'false', id: expect.any(String), label: 'New Node'})
+    expect(addNode).toHaveBeenCalledWith({
+      completed: 'false',
+      id: expect.any(String),
+      label: 'New Node',
+    })
     expect(setNodeId).not.toBeCalled()
   })
 
@@ -201,13 +205,13 @@ describe('addEdgeValidator', () => {
   const edges: Edge[] = [
     { id: '1', from: 'A', to: 'B', type: KnowledgeEdgeType.HAS_KNOWLEDGE },
     { id: '2', from: 'B', to: 'C', type: KnowledgeEdgeType.HAS_KNOWLEDGE },
-  ];
+  ]
 
   cases(
     'returns correct result',
     ({ data, expected }) => {
-      const result = addEdgeValidator(edges, data);
-      expect(result).toBe(expected);
+      const result = addEdgeValidator(edges, data)
+      expect(result).toBe(expected)
     },
     [
       { name: 'when from and to are the same', data: { from: 'A', to: 'A' }, expected: false },
@@ -215,5 +219,5 @@ describe('addEdgeValidator', () => {
       { name: 'when reverse edge already exists', data: { from: 'B', to: 'A' }, expected: false },
       { name: 'when edge does not already exist', data: { from: 'A', to: 'C' }, expected: true },
     ],
-  );
-});
+  )
+})

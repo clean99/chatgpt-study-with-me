@@ -23,74 +23,88 @@ interface KnowledgeGraphProps {
   height?: number
 }
 
-const KnowledgeGraph: React.FC<KnowledgeGraphProps> = observer(({
-  width = window.innerWidth,
-  height = window.innerHeight,
-}) => {
-  const store = React.useContext(Context)
+const KnowledgeGraph: React.FC<KnowledgeGraphProps> = observer(
+  ({ width = window.innerWidth, height = window.innerHeight }) => {
+    const store = React.useContext(Context)
 
-  const network = React.useRef<any>(null)
-  const options = React.useMemo(() => optionGenerator(width, height, store.addEdge, store.edges), [width, height, store.edges])
-  const events = {
-    doubleClick: _.curryRight(onDoubleClick)(store),
-    select: _.curryRight(onSelect)(store),
-  }
-
-  React.useEffect(() => {
-    if (network.current) {
-      if (store.editable) {
-        network.current.addEdgeMode()
-      } else {
-        network.current.disableEditMode()
-        store.clearEdgeId()
-        store.clearNodeId()
-      }
+    const network = React.useRef<any>(null)
+    const options = React.useMemo(
+      () => optionGenerator(width, height, store.addEdge, store.edges),
+      [width, height, store.edges],
+    )
+    const events = {
+      doubleClick: _.curryRight(onDoubleClick)(store),
+      select: _.curryRight(onSelect)(store),
     }
-  }, [network, store.editable, store.nodes, store.edges, store.nodeId])
 
-  const graph = {
-    nodes: store.nodes.map(nodeToVisNode),
-    edges: store.edges.map(edgeToVisEdge),
-  }
+    React.useEffect(() => {
+      if (network.current) {
+        if (store.editable) {
+          network.current.addEdgeMode()
+        } else {
+          network.current.disableEditMode()
+          store.clearEdgeId()
+          store.clearNodeId()
+        }
+      }
+    }, [network, store.editable, store.nodes, store.edges, store.nodeId])
 
-  return (
-    <div>
-      <Graph
-        graph={graph}
-        options={options}
-        events={events}
-        getNetwork={(newNetwork: any) => {
-          network.current = newNetwork
-        }}
-      />
-      <ToolBar store={store} />
-      <InstructionPanel title={INSTRUCTION_TITLE} colorWithTitles={COLOR_WITH_TITLES} instruction={INSTRUCTION} visible={store.editable} />
-      {store.nodeId && (
-        <NodePanel
-          x={10}
-          y={10}
-          nodeData={
-            store.nodes.find((node) => node.id === store.nodeId) ?? {
-              id: '',
-              label: '',
-              completed: Completed.NOT_COMPLETED,
-            }
-          }
-          isVisible={!!store.nodeId}
-          onClose={store.clearNodeId}
-          onModifySubmit={store.modifyNode}
-          onDelete={store.deleteNode}
-          onAdd={store.addNodesWithParent}
+    const graph = {
+      nodes: store.nodes.map(nodeToVisNode),
+      edges: store.edges.map(edgeToVisEdge),
+    }
+
+    return (
+      <div>
+        <Graph
+          graph={graph}
+          options={options}
+          events={events}
+          getNetwork={(newNetwork: any) => {
+            network.current = newNetwork
+          }}
         />
-      )}
-    </div>
-  )
-})
+        <ToolBar store={store} />
+        <InstructionPanel
+          title={INSTRUCTION_TITLE}
+          colorWithTitles={COLOR_WITH_TITLES}
+          instruction={INSTRUCTION}
+          visible={store.editable}
+        />
+        {store.nodeId && (
+          <NodePanel
+            x={10}
+            y={10}
+            nodeData={
+              store.nodes.find((node) => node.id === store.nodeId) ?? {
+                id: '',
+                label: '',
+                completed: Completed.NOT_COMPLETED,
+              }
+            }
+            isVisible={!!store.nodeId}
+            onClose={store.clearNodeId}
+            onModifySubmit={store.modifyNode}
+            onDelete={store.deleteNode}
+            onAdd={store.addNodesWithParent}
+          />
+        )}
+      </div>
+    )
+  },
+)
 
-const Context = React.createContext<KnowledgeGraphStore>(new KnowledgeGraphStore({ nodes: [], edges: [] }))
+const Context = React.createContext<KnowledgeGraphStore>(
+  new KnowledgeGraphStore({ nodes: [], edges: [] }),
+)
 
 const KnowledgeGraphWithStore: React.FC<KnowledgeGraphProps> = (props) => (
-  <Context.Provider value={React.useMemo(() => new KnowledgeGraphStore({ nodes: props.data.nodes, edges: props.data.edges }),[props.data.nodes, props.data.nodes])}>
+  <Context.Provider
+    value={React.useMemo(
+      () => new KnowledgeGraphStore({ nodes: props.data.nodes, edges: props.data.edges }),
+      [props.data.nodes, props.data.nodes],
+    )}
+  >
     <KnowledgeGraph {...props} />
   </Context.Provider>
 )

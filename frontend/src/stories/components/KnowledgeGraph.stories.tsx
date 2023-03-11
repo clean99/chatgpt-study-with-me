@@ -17,4 +17,4 @@ Default.args = {
     nodes: mockStore.nodes,
     edges: mockStore.edges,
   },
-};
+}
