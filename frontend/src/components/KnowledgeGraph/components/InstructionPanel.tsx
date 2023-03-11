@@ -14,9 +14,10 @@ interface InstructionPanelProps {
   title: string;
   colorWithTitles: ColorWithTitle[];
   instruction: string[];
+  visible: boolean;
 }
 
-const InstructionPanel: React.FC<InstructionPanelProps> = ({ title, colorWithTitles, instruction }) => {
+const InstructionPanel: React.FC<InstructionPanelProps> = ({ title, colorWithTitles, instruction, visible }) => {
   return (
     <div className={styles.instructionPanel}>
       <Title level={3} className={styles.title}>{title}</Title>
@@ -30,7 +31,7 @@ const InstructionPanel: React.FC<InstructionPanelProps> = ({ title, colorWithTit
         ))}
       </div>
       <div className={styles.instruction}>
-        {instruction.map((step, index) => (
+        {visible && instruction.map((step, index) => (
           <div className={styles.step} key={uuidv4()}>
             <div className={styles.bullet}>{index + 1}</div>
             <Text type={'secondary'}>{step}</Text>

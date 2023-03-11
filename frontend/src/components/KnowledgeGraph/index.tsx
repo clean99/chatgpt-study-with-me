@@ -12,6 +12,8 @@ import { optionGenerator } from './graphConfig/option'
 import { onDoubleClick } from './graphConfig/events'
 import _ from 'lodash'
 import { observer } from 'mobx-react-lite'
+import InstructionPanel from './components/InstructionPanel'
+import { COLOR_WITH_TITLES, INSTRUCTION, INSTRUCTION_TITLE } from '../../constants/graph'
 
 interface KnowledgeGraphProps {
   data: {
@@ -62,6 +64,7 @@ const KnowledgeGraph: React.FC<KnowledgeGraphProps> = observer(({
       <div className={styles.toolbar}>
         <EditButton editable={store.editable} setEditable={store.setEditable} />
       </div>
+      <InstructionPanel title={INSTRUCTION_TITLE} colorWithTitles={COLOR_WITH_TITLES} instruction={INSTRUCTION} visible={store.editable} />
       {store.nodeId && (
         <NodePanel
           x={10}

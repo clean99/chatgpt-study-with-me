@@ -8,15 +8,13 @@
 }
 
 .instructionPanel {
-    height: 100%;
-    position: relative;
-    width: 100%;
-    z-index: 999;
-    padding: 20px;
-  
     .title {
+      position: fixed;
+      top: 0;
+      left: 50%;
       text-align: center;
-      margin: 0;
+      margin: 10px;
+      transform: translateX(-50%);
     }
         .colorWithTitles {
             position:fixed;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import InstructionPanel from '../../components/KnowledgeGraph/components/InstructionPanel';
-import { colorWithTitles, instruction } from '../../constants/graph';
+import {  COLOR_WITH_TITLES, INSTRUCTION, INSTRUCTION_TITLE } from '../../constants/graph';
 
 export default {
   title: 'Components/InstructionPanel',
@@ -14,7 +14,8 @@ const Template: ComponentStory<typeof InstructionPanel> = (args) => <div style={
 
 export const Default = Template.bind({});
 Default.args = {
-  title: 'Knowledge Graph',
-  colorWithTitles,
-  instruction,
+  title: INSTRUCTION_TITLE,
+  colorWithTitles: COLOR_WITH_TITLES,
+  instruction: INSTRUCTION,
+  visible: true,
 };
