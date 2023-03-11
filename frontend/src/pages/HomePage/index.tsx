@@ -12,7 +12,7 @@ const HomePage: React.FC<HomePageProps> = ({ posts }) => {
   return (
     <Layout>
       <Space direction='vertical' size={'large'} className={styles.container}>
-        {posts.map((post, index) => (
+        {posts?.map((post, index) => (
           <PostWithDescription
             key={index}
             title={post.title}
