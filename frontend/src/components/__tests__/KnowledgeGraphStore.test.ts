@@ -1,5 +1,11 @@
 import { Completed, Edge, KnowledgeEdgeType, Node } from '../../types/types'
 import KnowledgeGraphStore from '../KnowledgeGraph/store'
+import * as graphApi from '../../services/graph'
+
+// mock getGraph
+jest.mock('../../services/graph', () => ({
+  getGraph: jest.fn(),
+}))
 
 describe('KnowledgeGraphStore', () => {
   const nodes: Node[] = [
@@ -16,7 +22,12 @@ describe('KnowledgeGraphStore', () => {
   let store: KnowledgeGraphStore
 
   beforeEach(() => {
-    store = new KnowledgeGraphStore({ nodes, edges })
+    jest.clearAllMocks()
+    jest
+      .spyOn(graphApi, 'getGraph')
+      .mockResolvedValue({ data: { nodes, edges }, status: 200, statusText: 'OK' })
+    store = new KnowledgeGraphStore()
+    store.initGraph()
   })
 
   it('should set nodeId', () => {

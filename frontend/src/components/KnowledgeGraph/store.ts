@@ -2,6 +2,7 @@ import { makeAutoObservable } from 'mobx'
 import { Edge, EdgeFromTo, KnowledgeEdgeType, Node } from '../../types/types'
 import { edgeFactory, nodeFactory } from './utils'
 import { v4 as uuidv4 } from 'uuid'
+import { getGraph, GetGraphResponse } from '../../services/graph'
 
 class KnowledgeGraphStore {
   nodes: Node[] = []
@@ -11,10 +12,7 @@ class KnowledgeGraphStore {
   edgeId: string | null = null
   editable = false
 
-  constructor(data: { nodes: Node[]; edges: Edge[] }) {
-    this.nodes = data.nodes
-    this.edges = data.edges
-
+  constructor() {
     makeAutoObservable(this, {}, { autoBind: true })
   }
 
@@ -78,6 +76,18 @@ class KnowledgeGraphStore {
     this.nodes = [...this.nodes, ...newNodes]
     this.edges = [...this.edges, ...newEdges]
     this.clearNodeId()
+  }
+
+  async initGraph() {
+    try {
+      const response: GetGraphResponse = await getGraph()
+      const { nodes, edges } = response.data
+      this.nodes = nodes
+      this.edges = edges
+      console.log('Graph data has been fetched.', response)
+    } catch (error) {
+      console.error('Error fetching graph data:', error)
+    }
   }
 }
 

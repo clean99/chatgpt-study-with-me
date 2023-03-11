@@ -2,7 +2,7 @@ import * as React from 'react'
 // eslint-disable-next-line
 // @ts-ignore  react-graph-vis don't have types yet.
 import Graph from 'react-graph-vis'
-import { Completed, Edge, Node } from '../../types/types'
+import { Completed } from '../../types/types'
 import NodePanel from '../NodePanel'
 import { edgeToVisEdge, nodeToVisNode } from './utils'
 import KnowledgeGraphStore from './store'
@@ -15,10 +15,6 @@ import { COLOR_WITH_TITLES, INSTRUCTION, INSTRUCTION_TITLE } from '../../constan
 import ToolBar from './components/ToolBar.tsx'
 
 interface KnowledgeGraphProps {
-  data: {
-    nodes: Node[]
-    edges: Edge[]
-  }
   width?: number
   height?: number
 }
@@ -48,6 +44,10 @@ const KnowledgeGraph: React.FC<KnowledgeGraphProps> = observer(
         }
       }
     }, [network, store.editable, store.nodes, store.edges, store.nodeId])
+
+    React.useEffect(() => {
+      store.initGraph()
+    }, [store])
 
     const graph = {
       nodes: store.nodes.map(nodeToVisNode),
@@ -94,17 +94,10 @@ const KnowledgeGraph: React.FC<KnowledgeGraphProps> = observer(
   },
 )
 
-const Context = React.createContext<KnowledgeGraphStore>(
-  new KnowledgeGraphStore({ nodes: [], edges: [] }),
-)
+const Context = React.createContext<KnowledgeGraphStore>(new KnowledgeGraphStore())
 
 const KnowledgeGraphWithStore: React.FC<KnowledgeGraphProps> = (props) => (
-  <Context.Provider
-    value={React.useMemo(
-      () => new KnowledgeGraphStore({ nodes: props.data.nodes, edges: props.data.edges }),
-      [props.data.nodes, props.data.nodes],
-    )}
-  >
+  <Context.Provider value={React.useMemo(() => new KnowledgeGraphStore(), [])}>
     <KnowledgeGraph {...props} />
   </Context.Provider>
 )
