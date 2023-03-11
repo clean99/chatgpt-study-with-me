@@ -12,7 +12,6 @@ import { SuperTokensConfig } from './config'
 import ConversationPage from './pages/ConversationPage'
 import HomePage from './pages/HomePage'
 
-
 const posts: any = []
 
 SuperTokens.init(SuperTokensConfig)
