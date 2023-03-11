@@ -64,12 +64,10 @@ const GenerateNodeForm: React.FC<GenerateNodeFormProps> = ({ onSubmit, nodeId })
                 >
                   <Input placeholder='node title' className='w-11/12 mr-2' />
                 </Form.Item>
-                {fields.length > 1 ? (
-                  <MinusCircleOutlined
+                <MinusCircleOutlined
                     className='dynamic-delete-button'
                     onClick={() => remove(field.name)}
                   />
-                ) : null}
               </Form.Item>
             ))}
             {fields.length < MAX_NODES && (
