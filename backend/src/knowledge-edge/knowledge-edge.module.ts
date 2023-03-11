@@ -9,5 +9,6 @@ import { neo4jProviderFactory } from '../database/neo4j';
     KnowledgeEdgeService,
     { provide: 'Driver', useValue: neo4jProviderFactory() },
   ],
+  exports: [KnowledgeEdgeService],
 })
 export class KnowledgeEdgeModule {}
