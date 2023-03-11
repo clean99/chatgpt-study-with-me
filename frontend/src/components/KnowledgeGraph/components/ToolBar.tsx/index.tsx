@@ -10,6 +10,13 @@ interface ToolBarProps {
 }
 
 const ToolBar: React.FC<ToolBarProps> = observer(({ store }) => {
+  const handleEditOnClick = () => {
+    if (store.editable) {
+      store.sendDiff()
+    }
+    store.setEditable(!store.editable)
+  }
+
   return (
     <div className={styles.toolbar}>
       {store.editable && store.edgeId && (
@@ -17,7 +24,7 @@ const ToolBar: React.FC<ToolBarProps> = observer(({ store }) => {
           Delete Edge
         </Button>
       )}
-      <EditButton editable={store.editable} setEditable={store.setEditable} />
+      <EditButton editable={store.editable} handleOnClick={handleEditOnClick} />
     </div>
   )
 })

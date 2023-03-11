@@ -2,11 +2,15 @@ import { makeAutoObservable } from 'mobx'
 import { Edge, EdgeFromTo, KnowledgeEdgeType, Node } from '../../types/types'
 import { edgeFactory, nodeFactory } from './utils'
 import { v4 as uuidv4 } from 'uuid'
-import { getGraph, GetGraphResponse } from '../../services/graph'
+import { getGraph, GetGraphResponse, postDiff } from '../../services/graph'
+import { diff, edgeCompare, nodeCompare, sorter } from '../../utils/diff'
+import { message } from 'antd'
 
 class KnowledgeGraphStore {
   nodes: Node[] = []
   edges: Edge[] = []
+  defaultNodes: Node[] = []
+  defaultEdges: Edge[] = []
 
   nodeId: string | null = null
   edgeId: string | null = null
@@ -78,15 +82,33 @@ class KnowledgeGraphStore {
     this.clearNodeId()
   }
 
+  setNodesAndEdges(nodes: Node[], edges: Edge[]) {
+    this.nodes = nodes
+    this.edges = edges
+    this.defaultNodes = nodes
+    this.defaultEdges = edges
+  }
+
   async initGraph() {
     try {
       const response: GetGraphResponse = await getGraph()
       const { nodes, edges } = response.data
-      this.nodes = nodes
-      this.edges = edges
-      console.log('Graph data has been fetched.', response)
+      this.setNodesAndEdges(nodes, edges)
+
     } catch (error) {
-      console.error('Error fetching graph data:', error)
+      message.error('Error getting graph.')
+    }
+  }
+
+  async sendDiff() {
+    try {
+      const nodeDiff = diff<Node>(this.defaultNodes, this.nodes, nodeCompare, sorter)
+      const edgeDiff = diff<Edge>(this.defaultEdges, this.edges, edgeCompare, sorter)
+      const response = await postDiff(nodeDiff, edgeDiff)
+      const { nodes, edges } = response.data
+      this.setNodesAndEdges(nodes, edges)
+    } catch (error) {
+      message.error('Error posting diff.')
     }
   }
 }

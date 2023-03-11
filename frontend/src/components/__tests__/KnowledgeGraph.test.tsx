@@ -43,21 +43,20 @@ describe('EditButton', () => {
   })
 
   it('should show "Edit" when not editable', () => {
-    render(<EditButton editable={false} setEditable={() => 'set edit'} />)
+    render(<EditButton editable={false} handleOnClick={() => 'set edit'} />)
     expect(screen.getByRole('button')).toHaveTextContent('Edit')
   })
 
   it('should show "Save" when editable', () => {
-    render(<EditButton editable={true} setEditable={() => 'set edit'} />)
+    render(<EditButton editable={true} handleOnClick={() => 'set edit'} />)
     expect(screen.getByRole('button')).toHaveTextContent('Save')
   })
 
   it('should call setEditable when clicked', () => {
-    const setEditable = jest.fn()
-    render(<EditButton editable={false} setEditable={setEditable} />)
+    const handleOnClick = jest.fn()
+    render(<EditButton editable={false} handleOnClick={handleOnClick} />)
     userEvent.click(screen.getByRole('button'))
-    expect(setEditable).toHaveBeenCalledTimes(1)
-    expect(setEditable).toHaveBeenCalledWith(true)
+    expect(handleOnClick).toHaveBeenCalledTimes(1)
   })
 })
 
