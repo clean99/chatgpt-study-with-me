@@ -23,19 +23,14 @@ interface KnowledgeGraphProps {
   height?: number
 }
 
-const KnowledgeGraph: React.FC<KnowledgeGraphProps> = ({
-  data,
+const KnowledgeGraph: React.FC<KnowledgeGraphProps> = observer(({
   width = window.innerWidth,
   height = window.innerHeight,
 }) => {
   const store = React.useContext(Context)
-  console.log(store)
-  React.useEffect(() => {
-    store.setEditable(true)
-  }, [data.nodes, store])
 
   const network = React.useRef<any>(null)
-  const options = React.useMemo(() => optionGenerator(width, height, store.addEdge), [width, height])
+  const options = React.useMemo(() => optionGenerator(width, height, store.addEdge, store.edges), [width, height, store.edges])
   const events = {
     doubleClick: _.curryRight(onDoubleClick)(store)
   }
@@ -48,7 +43,7 @@ const KnowledgeGraph: React.FC<KnowledgeGraphProps> = ({
         network.current.disableEditMode()
       }
     }
-  }, [network, store.editable, store.nodes, store.edges])
+  }, [network, store.editable, store.nodes, store.edges, store.nodeId])
 
   const graph = {
     nodes: store.nodes.map(nodeToVisNode),
@@ -89,14 +84,14 @@ const KnowledgeGraph: React.FC<KnowledgeGraphProps> = ({
       )}
     </div>
   )
-}
+})
 
 const Context = React.createContext<KnowledgeGraphStore>(new KnowledgeGraphStore({ nodes: [], edges: [] }))
 
 const KnowledgeGraphWithStore: React.FC<KnowledgeGraphProps> = (props) => (
-  <Context.Provider value={new KnowledgeGraphStore({ nodes: props.data.nodes, edges: props.data.edges })}>
+  <Context.Provider value={React.useMemo(() => new KnowledgeGraphStore({ nodes: props.data.nodes, edges: props.data.edges }),[props.data.nodes, props.data.nodes])}>
     <KnowledgeGraph {...props} />
   </Context.Provider>
 )
 
-export default observer(KnowledgeGraphWithStore)
+export default KnowledgeGraphWithStore

@@ -1,11 +1,11 @@
 import { makeAutoObservable } from 'mobx'
-import { Edge, Node } from '../../types/types'
+import { Edge, EdgeFromTo, KnowledgeEdgeType, Node } from '../../types/types'
 import { edgeFactory, nodeFactory } from './utils'
 import { v4 as uuidv4 } from 'uuid'
 
 class KnowledgeGraphStore {
-  nodes: Node[]
-  edges: Edge[]
+  nodes: Node[] = []
+  edges: Edge[] = []
 
   nodeId: string | null = null
   editable = false
@@ -14,7 +14,7 @@ class KnowledgeGraphStore {
     this.nodes = data.nodes
     this.edges = data.edges
 
-    makeAutoObservable(this)
+    makeAutoObservable(this, {}, { autoBind: true })
   }
 
   setNodeId(nodeId: string | null) {
@@ -29,17 +29,13 @@ class KnowledgeGraphStore {
     this.editable = editable
   }
 
-  addEdge(data: any, callback: (edge: any) => void) {
-    if (data.from === data.to) {
-      return
-    }
-    const edge = { ...data, id: uuidv4() }
-    this.edges.push(edge)
-    callback(edge)
+  addEdge(data: EdgeFromTo) {
+    const edge = { ...data, id: uuidv4(), type: KnowledgeEdgeType.HAS_KNOWLEDGE }
+    this.edges = [...this.edges, edge]
   }
 
   addNode(node: Node) {
-    this.nodes.push(node)
+    this.nodes = [...this.nodes, node]
   }
 
   deleteNode(nodeId: string) {

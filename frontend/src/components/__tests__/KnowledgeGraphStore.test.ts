@@ -30,19 +30,9 @@ describe('KnowledgeGraphStore', () => {
   })
 
   it('should add edge', () => {
-    const callback = jest.fn()
     const data = { from: 'node1', to: 'node2' }
-    store.addEdge(data, callback)
+    store.addEdge(data)
     expect(store.edges.length).toBe(3)
-    expect(callback).toBeCalledWith(expect.objectContaining({ from: 'node1', to: 'node2' }))
-  })
-
-  it('should not add edge if from equals to', () => {
-    const callback = jest.fn()
-    const data = { from: 'node1', to: 'node1' }
-    store.addEdge(data, callback)
-    expect(store.edges.length).toBe(2)
-    expect(callback).not.toBeCalled()
   })
 
   it('should add node', () => {
