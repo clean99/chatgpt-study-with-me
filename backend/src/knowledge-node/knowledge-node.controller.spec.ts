@@ -67,6 +67,7 @@ describe('NodesController', () => {
     it('should call the service method to create a new node and return the result', async () => {
       const session: SessionContainer = { getUserId: () => 'user1' } as any;
       const requestBody = {
+        id: '1',
         label: 'New Node',
         completed: false,
         parentId: '1',

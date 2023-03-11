@@ -51,6 +51,7 @@ describe('KnowledgeGraphService', () => {
       ];
       const edges = [
         {
+          id: '1',
           from: '1',
           to: '2',
           type: KnowledgeEdgeType.HAS_KNOWLEDGE,

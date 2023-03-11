@@ -6,6 +6,9 @@ export enum KnowledgeEdgeType {
 }
 
 export class KnowledgeEdge {
+  @ApiProperty({ description: 'The ID of the edge' })
+  id: string;
+
   @ApiProperty({ description: 'The ID of the from node' })
   from: string;
 

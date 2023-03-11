@@ -8,9 +8,9 @@ export class KnowledgeNode {
   @ApiProperty({ type: 'boolean' })
   completed: boolean;
   @ApiProperty({ type: 'string' })
-  createdAt: Date;
+  createdAt?: Date;
   @ApiProperty({ type: 'string' })
-  updatedAt: Date;
+  updatedAt?: Date;
 
   constructor(
     id: string,

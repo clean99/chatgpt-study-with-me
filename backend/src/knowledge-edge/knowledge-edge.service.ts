@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Driver, ManagedTransaction } from 'neo4j-driver';
+import { EdgeDiff } from 'src/types/diff';
 import {
   KnowledgeEdge,
   KnowledgeEdgeType,
@@ -75,5 +76,81 @@ export class KnowledgeEdgeService {
 
     const relCount = result.records[0].get('relCount').toNumber();
     return relCount === 1;
+  }
+
+  async createEdge(userId: string, edge: KnowledgeEdge): Promise<string> {
+    const session = this.driver.session();
+
+    // Generate a unique ID for the new edge
+
+    try {
+      const result = await session.run(
+        `
+        MATCH (from:KnowledgeNode)<-[:HAS_KNOWLEDGE_NODE]-(user:User {id: $userId}), (to:KnowledgeNode)
+        WHERE from.id = $fromId AND to.id = $toId
+        CREATE (from)-[rel:KNOWLEDGE_EDGE {id: $id, type: $type}]->(to)
+        RETURN rel.id as id
+        `,
+        {
+          userId,
+          fromId: edge.from,
+          toId: edge.to,
+          id: edge.id,
+          type: edge.type,
+        },
+      );
+
+      // Return the ID of the created edge
+      const record = result.records[0];
+      return record.get('id');
+    } finally {
+      session.close();
+    }
+  }
+
+  async deleteEdge(userId: string, id: string): Promise<boolean> {
+    const session = this.driver.session();
+
+    try {
+      const result = await session.run(
+        `
+        MATCH (user:User {id: $userId})-[rel:KNOWLEDGE_EDGE {id: $id}]->()
+        DELETE rel
+        RETURN COUNT(rel) AS count
+        `,
+        { userId, id },
+      );
+
+      // Check if an edge was deleted
+      const record = result.records[0];
+      const count = record.get('count');
+      return count === 1;
+    } finally {
+      session.close();
+    }
+  }
+
+  async postDiff(userId: string, diff: EdgeDiff): Promise<boolean> {
+    const session = this.driver.session();
+    const { added, deleted, updated } = diff;
+
+    // Delete edges
+    for (const edge of deleted) {
+      await this.deleteEdge(userId, edge);
+    }
+
+    // Add new edges
+    for (const edge of added) {
+      await this.createEdge(userId, edge);
+    }
+
+    // Update existing edges
+    for (const edge of updated) {
+      await this.deleteEdge(userId, edge.id);
+      await this.createEdge(userId, edge);
+    }
+
+    session.close();
+    return true;
   }
 }

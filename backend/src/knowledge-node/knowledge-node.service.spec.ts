@@ -213,4 +213,101 @@ describe('KnowledgeNodeService', () => {
       expect(result).toEqual(true);
     });
   });
+
+  describe('postDiff', () => {
+    it('should delete nodes', async () => {
+      const deletedNodes = ['1', '2', '3'];
+      const deleteNodeMock = jest.spyOn(service, 'deleteNode');
+      deleteNodeMock.mockImplementation(() => Promise.resolve(true));
+      const session = {
+        run: jest.fn(),
+        close: jest.fn(),
+      };
+      (mockDriver.session as jest.Mock).mockReturnValue(session);
+
+      await service.postDiff(userId, {
+        added: [],
+        deleted: deletedNodes,
+        updated: [],
+      });
+
+      expect(deleteNodeMock).toHaveBeenCalledTimes(deletedNodes.length);
+      for (const nodeId of deletedNodes) {
+        expect(deleteNodeMock).toHaveBeenCalledWith(userId, nodeId);
+      }
+    });
+
+    it('should create nodes', async () => {
+      const addedNodes = [
+        {
+          id: '1',
+          label: 'node 1',
+          completed: false,
+        },
+        {
+          id: '2',
+          label: 'node 2',
+          completed: true,
+        },
+      ];
+      const createNodeMock = jest.spyOn(service, 'createNode');
+      createNodeMock.mockImplementation(() => Promise.resolve(addedNodes[0]));
+      const session = {
+        run: jest.fn(),
+        close: jest.fn(),
+      };
+      (mockDriver.session as jest.Mock).mockReturnValue(session);
+
+      await service.postDiff(userId, {
+        added: addedNodes,
+        deleted: [],
+        updated: [],
+      });
+
+      expect(createNodeMock).toHaveBeenCalledTimes(addedNodes.length);
+      for (const node of addedNodes) {
+        expect(createNodeMock).toHaveBeenCalledWith(userId, {
+          id: node.id,
+          label: node.label,
+          completed: node.completed,
+        });
+      }
+    });
+
+    it('should update nodes', async () => {
+      const updatedNodes = [
+        {
+          id: '1',
+          label: 'new label',
+          completed: false,
+        },
+        {
+          id: '2',
+          label: 'updated label',
+          completed: true,
+        },
+      ];
+      const updateNodeMock = jest.spyOn(service, 'updateNode');
+      updateNodeMock.mockImplementation(() => Promise.resolve(updatedNodes[0]));
+      const session = {
+        run: jest.fn(),
+        close: jest.fn(),
+      };
+      (mockDriver.session as jest.Mock).mockReturnValue(session);
+
+      await service.postDiff(userId, {
+        added: [],
+        deleted: [],
+        updated: updatedNodes,
+      });
+
+      expect(updateNodeMock).toHaveBeenCalledTimes(updatedNodes.length);
+      for (const node of updatedNodes) {
+        expect(updateNodeMock).toHaveBeenCalledWith(userId, node.id, {
+          label: node.label,
+          completed: node.completed,
+        });
+      }
+    });
+  });
 });

@@ -29,6 +29,7 @@ export const typeDefs = gql`
   }
 
   interface KnowledgeEdgeRelation @relationshipProperties {
+    id: ID!
     type: KnowledgeEdgeType! @default(value: HAS_KNOWLEDGE)
   }
 

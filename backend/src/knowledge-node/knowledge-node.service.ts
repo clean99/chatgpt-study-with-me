@@ -1,5 +1,6 @@
 import { Inject } from '@nestjs/common';
 import { Driver } from 'neo4j-driver';
+import { NodeDiff } from 'src/types/diff';
 import { v4 as uuid } from 'uuid';
 import { KnowledgeNode } from '../models/knowledge-node.model';
 import { KnowledgeNodeDto } from './knowledge-node.dto';
@@ -63,7 +64,6 @@ export class KnowledgeNodeService {
     nodeData: KnowledgeNodeDto,
   ): Promise<KnowledgeNode> {
     const session = this.driver.session();
-    const id = uuid();
     const now = new Date().toISOString();
     // MERGE: query and create user node if it doesn't exist
     const result = await session.run(
@@ -74,7 +74,7 @@ export class KnowledgeNodeService {
         RETURN node.id as id, node.label as label, node.completed as completed, node.createdAt as createdAt, node.updatedAt as updatedAt`,
       {
         userId,
-        id,
+        id: nodeData.id,
         label: nodeData.label,
         completed: nodeData.completed,
         now,
@@ -114,6 +114,38 @@ export class KnowledgeNodeService {
       { userId, nodeId },
     );
     session.close();
+    return true;
+  }
+
+  async postDiff(userId: string, diff: NodeDiff): Promise<boolean> {
+    const { added, deleted, updated } = diff;
+
+    const session = this.driver.session();
+
+    // Delete nodes
+    for (const nodeId of deleted) {
+      await this.deleteNode(userId, nodeId);
+    }
+
+    // Add new nodes
+    for (const node of added) {
+      await this.createNode(userId, {
+        id: node.id,
+        label: node.label,
+        completed: node.completed,
+      });
+    }
+
+    // Update existing nodes
+    for (const node of updated) {
+      await this.updateNode(userId, node.id, {
+        label: node.label,
+        completed: node.completed,
+      });
+    }
+
+    session.close();
+
     return true;
   }
 }
