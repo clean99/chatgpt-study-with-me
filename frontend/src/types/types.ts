@@ -47,3 +47,5 @@ export interface Edge {
   to: string
   type: KnowledgeEdgeType
 }
+
+export type EdgeFromTo = Pick<Edge, 'from' | 'to'>

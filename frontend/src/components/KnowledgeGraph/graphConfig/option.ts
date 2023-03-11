@@ -1,4 +1,7 @@
-export const optionGenerator = (width: number, height: number, addEdge: (data: any, callback: (edge: any) => void) => void) => ({
+import { Edge } from '../../../types/types';
+import { addEdgeValidator } from '../utils';
+
+export const optionGenerator = (width: number, height: number, addEdge: (data: any) => void, edges: Edge[]) => ({
     width: `${width}px`,
     height: `${height}px`,
     nodes: {
@@ -16,7 +19,13 @@ export const optionGenerator = (width: number, height: number, addEdge: (data: a
         roundness: 0.5,
       },
     },
-    manipulation: {
-      addEdge,
-    },
+    manipulation:{
+      addEdge: (data: any, callback: any) => {
+        if (!addEdgeValidator(edges, data)) {
+          return
+        }
+        addEdge(data);
+        callback(data);
+      },
+    }
 })

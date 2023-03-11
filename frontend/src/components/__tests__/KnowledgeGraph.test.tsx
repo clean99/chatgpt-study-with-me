@@ -11,7 +11,9 @@ import {
   nodeToVisNode,
   edgeToVisEdge,
   eventWrapper,
+  addEdgeValidator,
 } from '../KnowledgeGraph/utils'
+import cases from 'jest-in-case'
 
 describe('EditButton', () => {
   it('should render the button', () => {
@@ -63,6 +65,7 @@ describe('onDoubleClick', () => {
   const addNode = jest.fn()
   const setNodeId = jest.fn()
   const store = {
+    editable: true,
     addNode,
     setNodeId,
   }
@@ -166,3 +169,24 @@ describe('edgeFactory', () => {
     expect(edge.type).toEqual(KnowledgeEdgeType.HAS_KNOWLEDGE)
   })
 })
+
+describe('addEdgeValidator', () => {
+  const edges: Edge[] = [
+    { id: '1', from: 'A', to: 'B', type: KnowledgeEdgeType.HAS_KNOWLEDGE },
+    { id: '2', from: 'B', to: 'C', type: KnowledgeEdgeType.HAS_KNOWLEDGE },
+  ];
+
+  cases(
+    'returns correct result',
+    ({ data, expected }) => {
+      const result = addEdgeValidator(edges, data);
+      expect(result).toBe(expected);
+    },
+    [
+      { name: 'when from and to are the same', data: { from: 'A', to: 'A' }, expected: false },
+      { name: 'when edge already exists', data: { from: 'A', to: 'B' }, expected: false },
+      { name: 'when reverse edge already exists', data: { from: 'B', to: 'A' }, expected: false },
+      { name: 'when edge does not already exist', data: { from: 'A', to: 'C' }, expected: true },
+    ],
+  );
+});
