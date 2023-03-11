@@ -7,7 +7,7 @@ import { KnowledgeNodeDto } from './knowledge-node.dto';
 function processNodeRecord(record: any): KnowledgeNode {
   return {
     id: record.get('id'),
-    title: record.get('title'),
+    label: record.get('label'),
     completed: record.get('completed'),
     createdAt: record.get('createdAt'),
     updatedAt: record.get('updatedAt'),
@@ -21,7 +21,7 @@ export class KnowledgeNodeService {
     const session = this.driver.session();
     const result = await session.run(
       `MATCH (user:User {id: $userId})-[:HAS_KNOWLEDGE_NODE]->(node:KnowledgeNode)
-       RETURN node.id as id, node.title as title, node.completed as completed, node.createdAt as createdAt, node.updatedAt as updatedAt`,
+       RETURN node.id as id, node.label as label, node.completed as completed, node.createdAt as createdAt, node.updatedAt as updatedAt`,
       { userId },
     );
     session.close();
@@ -37,7 +37,7 @@ export class KnowledgeNodeService {
     const result = await session.run(
       `MATCH (user:User {id: $userId})-[:HAS_KNOWLEDGE_NODE]->(node:KnowledgeNode)-[:KNOWLEDGE_NODE_RELATION]->(parent:KnowledgeNode)
        WHERE parent.id IN $parentNodeIds
-       RETURN node.id as id, node.title as title, node.completed as completed, node.createdAt as createdAt, node.updatedAt as updatedAt`,
+       RETURN node.id as id, node.label as label, node.completed as completed, node.createdAt as createdAt, node.updatedAt as updatedAt`,
       { userId, parentNodeIds },
     );
     session.close();
@@ -50,7 +50,7 @@ export class KnowledgeNodeService {
     const result = await session.run(
       `MATCH (user:User {id: $userId})-[:HAS_KNOWLEDGE_NODE]->(node:KnowledgeNode)
        WHERE NOT (node)-[:KNOWLEDGE_NODE_RELATION]->()
-       RETURN node.id as id, node.title as title, node.completed as completed, node.createdAt as createdAt, node.updatedAt as updatedAt`,
+       RETURN node.id as id, node.label as label, node.completed as completed, node.createdAt as createdAt, node.updatedAt as updatedAt`,
       { userId },
     );
     session.close();
@@ -69,13 +69,13 @@ export class KnowledgeNodeService {
     const result = await session.run(
       `MERGE (user:User {id: $userId})
         ON CREATE SET user.createdAt = $now, user.updatedAt = $now
-        CREATE (node:KnowledgeNode {id: $id, title: $title, completed: $completed, createdAt: $now, updatedAt: $now})
+        CREATE (node:KnowledgeNode {id: $id, label: $label, completed: $completed, createdAt: $now, updatedAt: $now})
         CREATE (user)-[:HAS_KNOWLEDGE_NODE]->(node)
-        RETURN node.id as id, node.title as title, node.completed as completed, node.createdAt as createdAt, node.updatedAt as updatedAt`,
+        RETURN node.id as id, node.label as label, node.completed as completed, node.createdAt as createdAt, node.updatedAt as updatedAt`,
       {
         userId,
         id,
-        title: nodeData.title,
+        label: nodeData.label,
         completed: nodeData.completed,
         now,
       },
@@ -97,7 +97,7 @@ export class KnowledgeNodeService {
       `MATCH (user:User {id: $userId})-[:HAS_KNOWLEDGE_NODE]->(node:KnowledgeNode {id: $nodeId})
        SET node += $nodeData
        SET node.updatedAt = $now
-       RETURN node.id as id, node.title as title, node.completed as completed, node.createdAt as createdAt, node.updatedAt as updatedAt`,
+       RETURN node.id as id, node.label as label, node.completed as completed, node.createdAt as createdAt, node.updatedAt as updatedAt`,
       { userId, nodeId, nodeData, now },
     );
     session.close();

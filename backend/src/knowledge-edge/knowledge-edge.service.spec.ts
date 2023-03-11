@@ -37,8 +37,8 @@ describe('KnowledgeEdgeService', () => {
   describe('getEdges', () => {
     const nodeIds = ['1', '2'];
     const generateGetRecord = (key: string) => (path: string) => {
-      if (path === 'source') return '1' + key;
-      if (path === 'target') return '2' + key;
+      if (path === 'from') return '1' + key;
+      if (path === 'to') return '2' + key;
       if (path === 'type') return 'HAS_KNOWLEDGE';
     };
     it('should return an empty array when no edges exist between the provided nodes', async () => {
@@ -95,8 +95,8 @@ describe('KnowledgeEdgeService', () => {
 
   describe('connect', () => {
     it('should return true when the query creates a new relationship', async () => {
-      const source = 'node1';
-      const target = 'node2';
+      const from = 'node1';
+      const to = 'node2';
       const type = KnowledgeEdgeType.HAS_KNOWLEDGE;
 
       const txRunMock = jest.fn().mockResolvedValue({
@@ -113,20 +113,20 @@ describe('KnowledgeEdgeService', () => {
         close: jest.fn(),
       } as any);
 
-      const result = await service.connect(source, target, type);
+      const result = await service.connect(from, to, type);
 
       expect(executeWriteMock).toHaveBeenCalledWith(expect.any(Function));
       expect(txRunMock).toHaveBeenCalledWith(expect.any(String), {
-        source,
-        target,
+        from,
+        to,
         type,
       });
       expect(result).toBe(true);
     });
 
     it('should return false when the query does not create a new relationship', async () => {
-      const source = 'node1';
-      const target = 'node2';
+      const from = 'node1';
+      const to = 'node2';
       const type = KnowledgeEdgeType.HAS_KNOWLEDGE;
 
       const txRunMock = jest.fn().mockResolvedValue({
@@ -144,12 +144,12 @@ describe('KnowledgeEdgeService', () => {
         close: jest.fn(),
       } as any);
 
-      const result = await service.connect(source, target, type);
+      const result = await service.connect(from, to, type);
 
       expect(executeWriteMock).toHaveBeenCalledWith(expect.any(Function));
       expect(txRunMock).toHaveBeenCalledWith(expect.any(String), {
-        source,
-        target,
+        from,
+        to,
         type,
       });
       expect(result).toBe(false);
@@ -157,8 +157,8 @@ describe('KnowledgeEdgeService', () => {
   });
 
   describe('disconnect', () => {
-    const source = 'node1';
-    const target = 'node2';
+    const from = 'node1';
+    const to = 'node2';
     const type = KnowledgeEdgeType.HAS_KNOWLEDGE;
     it('should delete the edge and return true', async () => {
       // Arrange
@@ -177,7 +177,7 @@ describe('KnowledgeEdgeService', () => {
       driver.session = jest.fn().mockReturnValue(session);
 
       // Act
-      const result = await service.disconnect(source, target, type);
+      const result = await service.disconnect(from, to, type);
 
       // Assert
       expect(driver.session).toHaveBeenCalled();
@@ -204,7 +204,7 @@ describe('KnowledgeEdgeService', () => {
       driver.session = jest.fn().mockReturnValue(session);
 
       // Act
-      const result = await service.disconnect(source, target, type);
+      const result = await service.disconnect(from, to, type);
 
       // Assert
       expect(driver.session).toHaveBeenCalled();

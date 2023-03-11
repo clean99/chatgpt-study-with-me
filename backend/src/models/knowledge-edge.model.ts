@@ -6,11 +6,11 @@ export enum KnowledgeEdgeType {
 }
 
 export class KnowledgeEdge {
-  @ApiProperty({ description: 'The ID of the source node' })
-  source: string;
+  @ApiProperty({ description: 'The ID of the from node' })
+  from: string;
 
-  @ApiProperty({ description: 'The ID of the target node' })
-  target: string;
+  @ApiProperty({ description: 'The ID of the to node' })
+  to: string;
 
   @ApiProperty({
     enum: ['HAS_KNOWLEDGE', 'BEFORE_KNOWLEDGE'],
@@ -18,9 +18,9 @@ export class KnowledgeEdge {
   })
   type: KnowledgeEdgeType;
 
-  constructor(source: string, target: string, type: KnowledgeEdgeType) {
-    this.source = source;
-    this.target = target;
+  constructor(from: string, to: string, type: KnowledgeEdgeType) {
+    this.from = from;
+    this.to = to;
     this.type = type;
   }
 }

@@ -16,7 +16,7 @@ export const typeDefs = gql`
 
   type KnowledgeNode {
     id: ID
-    title: String!
+    label: String!
     completed: Boolean! @default(value: false)
     createdAt: DateTime!
     updatedAt: DateTime!

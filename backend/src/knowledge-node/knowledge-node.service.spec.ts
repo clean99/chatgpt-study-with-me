@@ -10,7 +10,7 @@ describe('KnowledgeNodeService', () => {
   const mockGetGenerator = (key: string) =>
     jest.fn((field) => {
       if (field === 'id') return 'node-id' + key;
-      if (field === 'title') return 'Node Title' + key;
+      if (field === 'label') return 'Node Title' + key;
       if (field === 'completed') return false;
       if (field === 'parentId') return null;
       if (field === 'createdAt') return new Date('2022-02-25T12:00:00.000Z');
@@ -18,7 +18,7 @@ describe('KnowledgeNodeService', () => {
     });
   const mockRecordGenerator = (key: string) => ({
     id: 'node-id' + key,
-    title: 'Node Title' + key,
+    label: 'Node Title' + key,
     completed: false,
     createdAt: new Date('2022-02-25T12:00:00.000Z'),
     updatedAt: new Date('2022-02-25T12:00:00.000Z'),
@@ -65,7 +65,7 @@ describe('KnowledgeNodeService', () => {
       expect(session.run).toHaveBeenCalledTimes(1);
       expect(session.run).toHaveBeenCalledWith(
         `MATCH (user:User {id: $userId})-[:HAS_KNOWLEDGE_NODE]->(node:KnowledgeNode)
-       RETURN node.id as id, node.title as title, node.completed as completed, node.createdAt as createdAt, node.updatedAt as updatedAt`,
+       RETURN node.id as id, node.label as label, node.completed as completed, node.createdAt as createdAt, node.updatedAt as updatedAt`,
         { userId },
       );
       expect(session.close).toHaveBeenCalledTimes(1);
@@ -101,7 +101,7 @@ describe('KnowledgeNodeService', () => {
       expect(session.run).toHaveBeenCalledWith(
         `MATCH (user:User {id: $userId})-[:HAS_KNOWLEDGE_NODE]->(node:KnowledgeNode)-[:KNOWLEDGE_NODE_RELATION]->(parent:KnowledgeNode)
        WHERE parent.id IN $parentNodeIds
-       RETURN node.id as id, node.title as title, node.completed as completed, node.createdAt as createdAt, node.updatedAt as updatedAt`,
+       RETURN node.id as id, node.label as label, node.completed as completed, node.createdAt as createdAt, node.updatedAt as updatedAt`,
         { userId: 'user-id', parentNodeIds: ['parent-id-1', 'parent-id-2'] },
       );
       expect(session.close).toHaveBeenCalledWith();
@@ -135,7 +135,7 @@ describe('KnowledgeNodeService', () => {
       expect(session.run).toHaveBeenCalledWith(
         `MATCH (user:User {id: $userId})-[:HAS_KNOWLEDGE_NODE]->(node:KnowledgeNode)
        WHERE NOT (node)-[:KNOWLEDGE_NODE_RELATION]->()
-       RETURN node.id as id, node.title as title, node.completed as completed, node.createdAt as createdAt, node.updatedAt as updatedAt`,
+       RETURN node.id as id, node.label as label, node.completed as completed, node.createdAt as createdAt, node.updatedAt as updatedAt`,
         { userId },
       );
       expect(session.close).toHaveBeenCalledTimes(1);
@@ -148,7 +148,7 @@ describe('KnowledgeNodeService', () => {
       // Arrange
       const nodeId = 'node-id';
       const nodeData = {
-        title: 'Updated Title',
+        label: 'Updated Title',
         completed: true,
       };
       const record = {

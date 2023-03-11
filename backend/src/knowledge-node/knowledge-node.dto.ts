@@ -4,12 +4,12 @@ import { IsBoolean, IsOptional, IsString, Length } from 'class-validator';
 export class KnowledgeNodeDto {
   @ApiProperty({
     type: String,
-    description: 'The title of the knowledge node',
+    description: 'The label of the knowledge node',
     maxLength: 255,
   })
   @IsString()
   @Length(1, 255)
-  title: string;
+  label: string;
 
   @ApiProperty({
     type: Boolean,

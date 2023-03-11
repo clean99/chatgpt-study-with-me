@@ -1,15 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Driver, ManagedTransaction, Transaction } from 'neo4j-driver';
+import { Driver, ManagedTransaction } from 'neo4j-driver';
 import {
   KnowledgeEdge,
   KnowledgeEdgeType,
 } from '../models/knowledge-edge.model';
 
 const processEdgeRecord = (record) => {
-  const source = record.get('source');
-  const target = record.get('target');
+  const from = record.get('from');
+  const to = record.get('to');
   const type = record.get('type');
-  return new KnowledgeEdge(source, target, type);
+  return new KnowledgeEdge(from, to, type);
 };
 
 @Injectable()
@@ -21,7 +21,7 @@ export class KnowledgeEdgeService {
     const result = await session.run(
       `MATCH (n1:KnowledgeNode)-[rel:KNOWLEDGE_NODE_RELATION]->(n2:KnowledgeNode)
        WHERE n1.id IN $nodeIds AND n2.id IN $nodeIds
-       RETURN n1.id as source, n2.id as target, rel.type as type`,
+       RETURN n1.id as from, n2.id as to, rel.type as type`,
       { nodeIds },
     );
     session.close();
@@ -32,19 +32,19 @@ export class KnowledgeEdgeService {
   }
 
   async connect(
-    source: string,
-    target: string,
+    from: string,
+    to: string,
     type: KnowledgeEdgeType = KnowledgeEdgeType.HAS_KNOWLEDGE,
   ): Promise<boolean> {
     const session = this.driver.session();
     const result = await session.executeWrite(
       async (tx: ManagedTransaction) => {
         const queryResult = await tx.run(
-          `MATCH (source:KnowledgeNode), (target:KnowledgeNode)
-         WHERE source.id = $source AND target.id = $target
-         MERGE (source)-[rel:KNOWLEDGE_NODE_RELATION {type: $type}]->(target)
+          `MATCH (from:KnowledgeNode), (to:KnowledgeNode)
+         WHERE from.id = $from AND to.id = $to
+         MERGE (from)-[rel:KNOWLEDGE_NODE_RELATION {type: $type}]->(to)
          RETURN COUNT(rel) AS relCount`,
-          { source, target, type },
+          { from, to, type },
         );
         const relCount = queryResult.records[0].get('relCount').toNumber();
         return relCount === 1;
@@ -55,20 +55,20 @@ export class KnowledgeEdgeService {
   }
 
   async disconnect(
-    source: string,
-    target: string,
+    from: string,
+    to: string,
     type: KnowledgeEdgeType = KnowledgeEdgeType.HAS_KNOWLEDGE,
   ): Promise<boolean> {
     const session = this.driver.session();
     const result = await session.executeWrite((tx: ManagedTransaction) => {
       return tx.run(
         `
-        MATCH (source:KnowledgeNode)-[rel:KNOWLEDGE_NODE_RELATION {type: $type}]->(target:KnowledgeNode)
-        WHERE source.id = $source AND target.id = $target
+        MATCH (from:KnowledgeNode)-[rel:KNOWLEDGE_NODE_RELATION {type: $type}]->(to:KnowledgeNode)
+        WHERE from.id = $from AND to.id = $to
         DELETE rel
         RETURN COUNT(rel) AS relCount
         `,
-        { source, target, type },
+        { from, to, type },
       );
     });
     session.close();

@@ -4,7 +4,7 @@ export class KnowledgeNode {
   @ApiProperty({ type: 'string' })
   id: string;
   @ApiProperty({ type: 'string' })
-  title: string;
+  label: string;
   @ApiProperty({ type: 'boolean' })
   completed: boolean;
   @ApiProperty({ type: 'string' })
@@ -14,14 +14,14 @@ export class KnowledgeNode {
 
   constructor(
     id: string,
-    title: string,
+    label: string,
     completed: boolean,
     parentId: string | null,
     createdAt?: Date,
     updatedAt?: Date,
   ) {
     this.id = id;
-    this.title = title;
+    this.label = label;
     this.completed = completed;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
