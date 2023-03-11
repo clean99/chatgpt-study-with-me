@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { sendMessage } from '../../utils/api'
+import { sendMessage } from '../../services/meta'
 import { Response, UserType } from '../../types/types'
 
 const useConversation = () => {

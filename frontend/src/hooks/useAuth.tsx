@@ -5,7 +5,7 @@ import {
   SessionContextType,
 } from 'supertokens-auth-react/recipe/session'
 import { useNavigate } from 'react-router-dom'
-import { getUserInfo } from '../utils/api'
+import { getUserInfo } from '../services/meta'
 import { UserInfo } from '../types/types'
 
 const useAuth = (): {
