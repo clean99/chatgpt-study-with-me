@@ -3,7 +3,6 @@ import { SessionAuth } from 'supertokens-auth-react/recipe/session'
 import ConversationPage from './pages/ConversationPage'
 import GraphPage from './pages/GraphPage'
 import Home from './pages/Home'
-import HomePage from './pages/HomePage'
 
 export interface Routes {
   label: string
@@ -13,7 +12,7 @@ export interface Routes {
 }
 
 export const routes = [
-  { label: 'Home', key: 'home', showOnNavbar: true, element: () => <HomePage posts={[]} /> },
+//   { label: 'Home', key: 'home', showOnNavbar: true, element: () => <HomePage posts={[]} /> },
   {
     label: 'Graph',
     key: 'graph',
@@ -43,6 +42,6 @@ export const routes = [
       </SessionAuth>
     ),
   },
-  { label: 'Redirect', key: '', element: () => <Navigate to='/home' /> },
+  { label: 'Redirect', key: '', element: () => <Navigate to='/graphpage' /> },
   { label: 'Contact', key: 'contact' },
 ]
