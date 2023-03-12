@@ -11,6 +11,7 @@ import Home from './pages/Home'
 import { SuperTokensConfig } from './config'
 import ConversationPage from './pages/ConversationPage'
 import HomePage from './pages/HomePage'
+import GraphPage from './pages/GraphPage'
 
 const posts: any = []
 
@@ -34,6 +35,14 @@ function App() {
                                   Else it redirects the user to "/auth" */
 
                   <HomePage posts={posts} />
+                }
+              />
+              <Route
+                path='/graphpage'
+                element={
+                  <SessionAuth>
+                    <GraphPage />
+                  </SessionAuth>
                 }
               />
               <Route

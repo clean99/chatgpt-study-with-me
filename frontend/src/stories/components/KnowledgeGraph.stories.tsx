@@ -27,7 +27,7 @@ export default {
   },
 } as ComponentMeta<typeof KnowledgeGraph>
 
-const Template: ComponentStory<typeof KnowledgeGraph> = (args) => <KnowledgeGraph {...args} />
+const Template: ComponentStory<typeof KnowledgeGraph> = (args) => <div style={{ height: '90vh' }}><KnowledgeGraph {...args} /></div>
 
 export const Default = Template.bind({})
 Default.args = {}

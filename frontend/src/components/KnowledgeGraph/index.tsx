@@ -13,20 +13,15 @@ import { observer } from 'mobx-react-lite'
 import InstructionPanel from './components/InstructionPanel'
 import { COLOR_WITH_TITLES, INSTRUCTION, INSTRUCTION_TITLE } from '../../constants/graph'
 import ToolBar from './components/ToolBar.tsx'
+import styles from './index.module.scss'
 
-interface KnowledgeGraphProps {
-  width?: number
-  height?: number
-}
-
-const KnowledgeGraph: React.FC<KnowledgeGraphProps> = observer(
-  ({ width = window.innerWidth, height = window.innerHeight }) => {
+const KnowledgeGraph: React.FC = observer(
+  () => {
     const store = React.useContext(Context)
-
     const network = React.useRef<any>(null)
     const options = React.useMemo(
-      () => optionGenerator(width, height, store.addEdge, store.edges),
-      [width, height, store.edges],
+      () => optionGenerator(store.addEdge, store.edges),
+      [store.edges],
     )
     const events = {
       doubleClick: _.curryRight(onDoubleClick)(store),
@@ -55,15 +50,17 @@ const KnowledgeGraph: React.FC<KnowledgeGraphProps> = observer(
     }
 
     return (
-      <div>
-        <Graph
-          graph={graph}
-          options={options}
-          events={events}
-          getNetwork={(newNetwork: any) => {
-            network.current = newNetwork
-          }}
-        />
+      <div className={styles.container}>
+        <div className='absolute h-full'>
+          <Graph
+            graph={graph}
+            options={options}
+            events={events}
+            getNetwork={(newNetwork: any) => {
+              network.current = newNetwork
+            }}
+          />
+        </div>
         <ToolBar store={store} />
         <InstructionPanel
           title={INSTRUCTION_TITLE}
@@ -96,9 +93,9 @@ const KnowledgeGraph: React.FC<KnowledgeGraphProps> = observer(
 
 const Context = React.createContext<KnowledgeGraphStore>(new KnowledgeGraphStore())
 
-const KnowledgeGraphWithStore: React.FC<KnowledgeGraphProps> = (props) => (
+const KnowledgeGraphWithStore: React.FC = () => (
   <Context.Provider value={React.useMemo(() => new KnowledgeGraphStore(), [])}>
-    <KnowledgeGraph {...props} />
+    <KnowledgeGraph />
   </Context.Provider>
 )
 

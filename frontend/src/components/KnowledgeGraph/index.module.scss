@@ -1,29 +1,38 @@
+.container {
+    @apply relative;
+    height: 100%;
+}
+
 .toolbar {
-    @apply fixed top-2 right-2;
+    @apply fixed right-2;
     @apply flex flex-row items-center justify-between;
     @apply m-2;
+    @apply z-10;
     .editableButton {
         @apply ml-2;
     }
 }
 
 .instructionPanel {
+    @apply pointer-events-none;
+    position: relative;
+    height: 100%;
     .title {
-      position: fixed;
-      top: 0;
+      position: absolute;
       left: 50%;
       text-align: center;
       margin: 10px;
       transform: translateX(-50%);
     }
         .colorWithTitles {
-            position:fixed;
-            bottom: 0;
+            position:absolute;
             right: 0;
+            bottom: 0;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             margin-right: 20px;
+            margin-bottom: 0;
       
             .colorWithTitle {
               display: flex;
@@ -45,7 +54,7 @@
           }
         
           .instruction {
-            position:fixed;
+            position:absolute;
             bottom: 0;
             left: 0;
             margin-left: 20px;

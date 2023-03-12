@@ -18,6 +18,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const navigationMenuItems = [
     { label: 'Home', key: 'home', onClick: () => navigate('/home') },
     { label: 'ChatGPT', key: 'chat', onClick: () => navigate('/chat') },
+    { label: 'Graph', key: 'graphpage', onClick: () => navigate('/graphpage') },
     { label: 'Contact', key: 'contact' },
   ]
 
@@ -34,7 +35,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           username={userInfo.email ?? ''}
           dropdownOptions={dropdownOptions}
         />
-        <Content className='px-4 py-4'>{children}</Content>
+        <Content className='px-4 py-4 h-[calc(100vh-112px-32px)]'>{children}</Content>
         <Footer />
       </AntdLayout>
     </Space>

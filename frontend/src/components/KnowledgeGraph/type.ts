@@ -1,5 +1,5 @@
 export enum VisNodeColor {
-  COMPLETED = '#e04141',
+  COMPLETED = '#FB7E81',
   NOT_COMPLETED = '#e09c41',
 }
 
