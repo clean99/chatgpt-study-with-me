@@ -5,6 +5,7 @@ import Footer from '../Footer'
 import useAuth from '../../hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
 import { routes } from '../../routes'
+import { LoadedSessionContext } from 'supertokens-auth-react/lib/build/recipe/session/types'
 
 const { Content } = AntdLayout
 
@@ -32,7 +33,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     <Space direction='vertical' style={{ width: '100%' }} size={[0, 48]}>
       <AntdLayout className='min-h-screen max-w-screen'>
         <NavigationBar
-          isLogin={(sessionContext as unknown).userId}
+          isLogin={!!(sessionContext as LoadedSessionContext).userId}
           navigationMenuItems={navigationMenuItems}
           username={''}
           dropdownOptions={dropdownOptions}
