@@ -1,10 +1,7 @@
 import { Edge, EdgeFromTo } from '../../../types/types'
 import { addEdgeValidator } from '../utils'
 
-export const optionGenerator = (
-  addEdge: (data: any) => void,
-  edges: Edge[],
-) => ({
+export const optionGenerator = (addEdge: (data: any) => void, edges: Edge[]) => ({
   autoResize: true,
   nodes: {
     shape: 'dot',
@@ -23,11 +20,11 @@ export const optionGenerator = (
     },
     color: {
       // color:'#848484',
-      highlight:'#848484',
+      highlight: '#848484',
       hover: '#d3d2cd',
       inherit: false,
-      opacity:1.0
-  }
+      opacity: 1.0,
+    },
   },
   physics: {
     forceAtlas2Based: {
@@ -44,7 +41,7 @@ export const optionGenerator = (
   manipulation: {
     //  must give a callback or it will throw an error
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      addEdge: (data: EdgeFromTo, callback: (data: unknown) => void) => {
+    addEdge: (data: EdgeFromTo, callback: (data: unknown) => void) => {
       if (!addEdgeValidator(edges, data)) {
         return
       }

@@ -14,16 +14,23 @@ export interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const { sessionContext, userInfo, logoutClicked } = useAuth()
+  const { sessionContext, logoutClicked } = useAuth()
   const navigate = useNavigate()
-  const dropdownOptions = React.useMemo(() => [{ label: 'Log out', key: '3', onClick: () => logoutClicked() }], [
-    logoutClicked,
-  ])
-  const navigationMenuItems = React.useMemo(() => routes.filter((route) => route.showOnNavbar).map((route) => ({
-    label: route.label,
-    key: route.key,
-    onClick: () => navigate('/' + route.key),
-  })), [navigate])
+  const dropdownOptions = React.useMemo(
+    () => [{ label: 'Log out', key: '3', onClick: () => logoutClicked() }],
+    [logoutClicked],
+  )
+  const navigationMenuItems = React.useMemo(
+    () =>
+      routes
+        .filter((route) => route.showOnNavbar)
+        .map((route) => ({
+          label: route.label,
+          key: route.key,
+          onClick: () => navigate('/' + route.key),
+        })),
+    [navigate],
+  )
 
   if (sessionContext.loading) {
     ;<Skeleton />

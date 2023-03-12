@@ -23,7 +23,9 @@ describe('KnowledgeGraphStore', () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
-    jest.spyOn(graphApi, 'getGraph').mockResolvedValue({data:{ nodes, edges }, status: 200, statusText: 'OK'})
+    jest
+      .spyOn(graphApi, 'getGraph')
+      .mockResolvedValue({ data: { nodes, edges }, status: 200, statusText: 'OK' })
     store = new KnowledgeGraphStore()
     store.initGraph()
   })

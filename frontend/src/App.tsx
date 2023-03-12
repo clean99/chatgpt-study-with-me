@@ -9,7 +9,6 @@ import * as ReactRouteDom from 'react-router-dom'
 import { SuperTokensConfig } from './config'
 import { routes } from './routes'
 
-
 SuperTokens.init(SuperTokensConfig)
 
 function App() {
@@ -21,15 +20,9 @@ function App() {
             <Routes>
               {/* This shows the login UI on "/auth" route */}
               {getSuperTokensRoutesForReactRouterDom(ReactRouteDom)}
-              {
-                routes.map((route) => (
-                  <Route
-                    key={route.key}
-                    path={'/' + route.key}
-                    element={route.element?.()}
-                  />
-                ))
-              }
+              {routes.map((route) => (
+                <Route key={route.key} path={'/' + route.key} element={route.element?.()} />
+              ))}
             </Routes>
           </div>
         </Router>

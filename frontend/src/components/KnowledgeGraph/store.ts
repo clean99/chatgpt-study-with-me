@@ -94,7 +94,6 @@ class KnowledgeGraphStore {
       const response: GetGraphResponse = await getGraph()
       const { nodes, edges } = response.data
       this.setNodesAndEdges(nodes, edges)
-
     } catch (error) {
       message.error('Error getting graph.')
     }

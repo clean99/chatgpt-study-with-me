@@ -1,7 +1,6 @@
 import { Inject } from '@nestjs/common';
 import { Driver } from 'neo4j-driver';
 import { NodeDiff } from 'src/types/diff';
-import { v4 as uuid } from 'uuid';
 import { KnowledgeNode } from '../models/knowledge-node.model';
 import { KnowledgeNodeDto } from './knowledge-node.dto';
 

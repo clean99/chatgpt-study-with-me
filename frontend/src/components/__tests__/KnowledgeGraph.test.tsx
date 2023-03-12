@@ -17,7 +17,7 @@ import cases from 'jest-in-case'
 
 describe('EditButton', () => {
   it('should render the button', () => {
-    render(<EditButton editable={false} setEditable={() => 'set edit'} />)
+    render(<EditButton editable={false} handleOnClick={() => 'set edit'} />)
     expect(screen.getByRole('button')).toBeInTheDocument()
   })
 
@@ -25,7 +25,7 @@ describe('EditButton', () => {
     const { rerender } = render(
       <EditButton
         editable={true}
-        setEditable={() => 'set edit'}
+        handleOnClick={() => 'set edit'}
         editableText='cool'
         notEditableText='good'
       />,
@@ -34,7 +34,7 @@ describe('EditButton', () => {
     rerender(
       <EditButton
         editable={false}
-        setEditable={() => 'set edit'}
+        handleOnClick={() => 'set edit'}
         editableText='cool'
         notEditableText='good'
       />,
@@ -52,7 +52,7 @@ describe('EditButton', () => {
     expect(screen.getByRole('button')).toHaveTextContent('Save')
   })
 
-  it('should call setEditable when clicked', () => {
+  it('should call handleOnClick when clicked', () => {
     const handleOnClick = jest.fn()
     render(<EditButton editable={false} handleOnClick={handleOnClick} />)
     userEvent.click(screen.getByRole('button'))
