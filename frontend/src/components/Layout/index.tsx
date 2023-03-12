@@ -34,7 +34,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <NavigationBar
           isLogin={(sessionContext as any).userId}
           navigationMenuItems={navigationMenuItems}
-          username={userInfo.email ?? ''}
+          username={''}
           dropdownOptions={dropdownOptions}
         />
         <Content className='px-4 py-4 h-[calc(100vh-112px-32px)]'>{children}</Content>
