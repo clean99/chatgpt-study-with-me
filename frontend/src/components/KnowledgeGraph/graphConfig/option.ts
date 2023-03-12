@@ -44,7 +44,7 @@ export const optionGenerator = (
   manipulation: {
     //  must give a callback or it will throw an error
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    addEdge: (data: EdgeFromTo, callback: (data: any) => void) => {
+      addEdge: (data: EdgeFromTo, callback: (data: unknown) => void) => {
       if (!addEdgeValidator(edges, data)) {
         return
       }
