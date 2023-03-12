@@ -103,7 +103,7 @@ describe('onSelect', () => {
   })
 
   it('should call setEdgeId with the edge id when an edge is selected', () => {
-    const e = { edges: ['1'] }
+    const e = { edges: ['1'], nodes: [] }
     onSelect(e, store as any)
     expect(setEdgeId).toHaveBeenCalledWith('1')
     expect(clearEdgeId).not.toBeCalled()
