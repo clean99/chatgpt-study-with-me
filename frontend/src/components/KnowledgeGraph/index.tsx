@@ -51,7 +51,7 @@ const KnowledgeGraph: React.FC = observer(
 
     return (
       <div className={styles.container}>
-        <div className='absolute h-full'>
+        <div className='absolute h-full w-full'>
           <Graph
             graph={graph}
             options={options}

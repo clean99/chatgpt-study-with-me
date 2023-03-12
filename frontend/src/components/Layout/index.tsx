@@ -4,6 +4,7 @@ import NavigationBar from '../NavigationBar'
 import Footer from '../Footer'
 import useAuth from '../../hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
+import { routes } from '../../routes'
 
 const { Content } = AntdLayout
 
@@ -14,13 +15,14 @@ export interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { sessionContext, userInfo, logoutClicked } = useAuth()
   const navigate = useNavigate()
-  const dropdownOptions = [{ label: 'Log out', key: '3', onClick: () => logoutClicked() }]
-  const navigationMenuItems = [
-    { label: 'Home', key: 'home', onClick: () => navigate('/home') },
-    { label: 'ChatGPT', key: 'chat', onClick: () => navigate('/chat') },
-    { label: 'Graph', key: 'graphpage', onClick: () => navigate('/graphpage') },
-    { label: 'Contact', key: 'contact' },
-  ]
+  const dropdownOptions = React.useMemo(() => [{ label: 'Log out', key: '3', onClick: () => logoutClicked() }], [
+    logoutClicked,
+  ])
+  const navigationMenuItems = React.useMemo(() => routes.filter((route) => route.showOnNavbar).map((route) => ({
+    label: route.label,
+    key: route.key,
+    onClick: () => navigate('/' + route.key),
+  })), [navigate])
 
   if (sessionContext.loading) {
     ;<Skeleton />

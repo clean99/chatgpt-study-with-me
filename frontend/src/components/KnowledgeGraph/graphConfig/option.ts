@@ -5,6 +5,7 @@ export const optionGenerator = (
   addEdge: (data: any) => void,
   edges: Edge[],
 ) => ({
+  autoResize: true,
   nodes: {
     shape: 'dot',
     size: 16,
