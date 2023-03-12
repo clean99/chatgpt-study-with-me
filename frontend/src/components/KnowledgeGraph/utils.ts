@@ -3,7 +3,7 @@ import { Completed, Edge, EdgeFromTo, KnowledgeEdgeType, Node } from '../../type
 import { VisNode, VisEdge, VisNodeColor } from './type'
 
 export function eventWrapper(callback: (e: any) => void, editable: boolean) {
-  return (e: any) => {
+  return (e: unknown) => {
     if (editable) {
       callback(e)
     }
