@@ -32,7 +32,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     <Space direction='vertical' style={{ width: '100%' }} size={[0, 48]}>
       <AntdLayout className='min-h-screen max-w-screen'>
         <NavigationBar
-          isLogin={(sessionContext as any).userId}
+          isLogin={(sessionContext as unknown).userId}
           navigationMenuItems={navigationMenuItems}
           username={''}
           dropdownOptions={dropdownOptions}
