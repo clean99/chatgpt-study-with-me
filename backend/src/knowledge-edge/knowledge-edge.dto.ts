@@ -4,18 +4,18 @@ import { KnowledgeEdgeType } from '../models/knowledge-edge.model';
 
 export class CreateKnowledgeEdgeDto {
   @ApiProperty({
-    description: 'The ID of the source node',
+    description: 'The ID of the from node',
     example: 'node1',
   })
   @IsString()
-  source: string;
+  from: string;
 
   @ApiProperty({
-    description: 'The ID of the target node',
+    description: 'The ID of the to node',
     example: 'node2',
   })
   @IsString()
-  target: string;
+  to: string;
 
   @ApiProperty({
     description: 'The type of the edge',
@@ -28,18 +28,18 @@ export class CreateKnowledgeEdgeDto {
 
 export class DeleteKnowledgeEdgeDto {
   @ApiProperty({
-    description: 'The ID of the source node',
+    description: 'The ID of the from node',
     example: 'node1',
   })
   @IsString()
-  source: string;
+  from: string;
 
   @ApiProperty({
-    description: 'The ID of the target node',
+    description: 'The ID of the to node',
     example: 'node2',
   })
   @IsString()
-  target: string;
+  to: string;
 
   @ApiProperty({
     description: 'The type of the edge',

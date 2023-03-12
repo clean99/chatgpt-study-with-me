@@ -2,7 +2,6 @@ import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import ConversationPage from '../../pages/ConversationPage'
 
-
 export default {
   title: 'Pages/ConversationPage',
   component: ConversationPage,

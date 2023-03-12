@@ -67,13 +67,14 @@ describe('NodesController', () => {
     it('should call the service method to create a new node and return the result', async () => {
       const session: SessionContainer = { getUserId: () => 'user1' } as any;
       const requestBody = {
-        title: 'New Node',
+        id: '1',
+        label: 'New Node',
         completed: false,
         parentId: '1',
       };
       const expectedResult: KnowledgeNode = {
         id: '7',
-        title: 'New Node',
+        label: 'New Node',
         completed: false,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -94,12 +95,12 @@ describe('NodesController', () => {
       const session: SessionContainer = { getUserId: () => 'user1' } as any;
       const nodeId = '7';
       const requestBody = {
-        title: 'Updated Node',
+        label: 'Updated Node',
         completed: true,
       };
       const expectedResult: KnowledgeNode = {
         id: '7',
-        title: 'Updated Node',
+        label: 'Updated Node',
         completed: true,
         createdAt: new Date(),
         updatedAt: new Date(),

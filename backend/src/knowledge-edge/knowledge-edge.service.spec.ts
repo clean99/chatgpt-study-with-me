@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { Driver } from 'neo4j-driver';
+import { userId } from '../user/__stubs__/stubs';
 import {
   KnowledgeEdge,
   KnowledgeEdgeType,
@@ -37,9 +38,10 @@ describe('KnowledgeEdgeService', () => {
   describe('getEdges', () => {
     const nodeIds = ['1', '2'];
     const generateGetRecord = (key: string) => (path: string) => {
-      if (path === 'source') return '1' + key;
-      if (path === 'target') return '2' + key;
+      if (path === 'from') return '1' + key;
+      if (path === 'to') return '2' + key;
       if (path === 'type') return 'HAS_KNOWLEDGE';
+      if (path === 'id') return key;
     };
     it('should return an empty array when no edges exist between the provided nodes', async () => {
       // Arrange
@@ -81,8 +83,8 @@ describe('KnowledgeEdgeService', () => {
 
       // Assert
       expect(result).toEqual([
-        new KnowledgeEdge('11', '21', KnowledgeEdgeType.HAS_KNOWLEDGE),
-        new KnowledgeEdge('12', '22', KnowledgeEdgeType.HAS_KNOWLEDGE),
+        new KnowledgeEdge('11', '21', KnowledgeEdgeType.HAS_KNOWLEDGE, '1'),
+        new KnowledgeEdge('12', '22', KnowledgeEdgeType.HAS_KNOWLEDGE, '2'),
       ]);
       expect(driver.session).toHaveBeenCalled();
       expect(session.run).toHaveBeenCalledWith(
@@ -95,8 +97,8 @@ describe('KnowledgeEdgeService', () => {
 
   describe('connect', () => {
     it('should return true when the query creates a new relationship', async () => {
-      const source = 'node1';
-      const target = 'node2';
+      const from = 'node1';
+      const to = 'node2';
       const type = KnowledgeEdgeType.HAS_KNOWLEDGE;
 
       const txRunMock = jest.fn().mockResolvedValue({
@@ -113,20 +115,20 @@ describe('KnowledgeEdgeService', () => {
         close: jest.fn(),
       } as any);
 
-      const result = await service.connect(source, target, type);
+      const result = await service.connect(from, to, type);
 
       expect(executeWriteMock).toHaveBeenCalledWith(expect.any(Function));
       expect(txRunMock).toHaveBeenCalledWith(expect.any(String), {
-        source,
-        target,
+        from,
+        to,
         type,
       });
       expect(result).toBe(true);
     });
 
     it('should return false when the query does not create a new relationship', async () => {
-      const source = 'node1';
-      const target = 'node2';
+      const from = 'node1';
+      const to = 'node2';
       const type = KnowledgeEdgeType.HAS_KNOWLEDGE;
 
       const txRunMock = jest.fn().mockResolvedValue({
@@ -144,12 +146,12 @@ describe('KnowledgeEdgeService', () => {
         close: jest.fn(),
       } as any);
 
-      const result = await service.connect(source, target, type);
+      const result = await service.connect(from, to, type);
 
       expect(executeWriteMock).toHaveBeenCalledWith(expect.any(Function));
       expect(txRunMock).toHaveBeenCalledWith(expect.any(String), {
-        source,
-        target,
+        from,
+        to,
         type,
       });
       expect(result).toBe(false);
@@ -157,8 +159,8 @@ describe('KnowledgeEdgeService', () => {
   });
 
   describe('disconnect', () => {
-    const source = 'node1';
-    const target = 'node2';
+    const from = 'node1';
+    const to = 'node2';
     const type = KnowledgeEdgeType.HAS_KNOWLEDGE;
     it('should delete the edge and return true', async () => {
       // Arrange
@@ -177,7 +179,7 @@ describe('KnowledgeEdgeService', () => {
       driver.session = jest.fn().mockReturnValue(session);
 
       // Act
-      const result = await service.disconnect(source, target, type);
+      const result = await service.disconnect(from, to, type);
 
       // Assert
       expect(driver.session).toHaveBeenCalled();
@@ -204,13 +206,122 @@ describe('KnowledgeEdgeService', () => {
       driver.session = jest.fn().mockReturnValue(session);
 
       // Act
-      const result = await service.disconnect(source, target, type);
+      const result = await service.disconnect(from, to, type);
 
       // Assert
       expect(driver.session).toHaveBeenCalled();
       expect(session.executeWrite).toHaveBeenCalledWith(expect.any(Function));
       expect(session.close).toHaveBeenCalled();
       expect(result).toBe(false);
+    });
+  });
+
+  describe('createEdge', () => {
+    it('should create an edge', async () => {
+      // Arrange
+      const edge = {
+        id: '1',
+        from: '1',
+        to: '2',
+        type: KnowledgeEdgeType.HAS_KNOWLEDGE,
+      };
+
+      const record = { get: jest.fn().mockReturnValue(edge.id) };
+      const result = { records: [record] };
+      const session = {
+        run: jest.fn().mockResolvedValue(result),
+        close: jest.fn(),
+      };
+
+      driver.session = jest.fn().mockReturnValue(session);
+
+      // Act
+      const createdId = await service.createEdge(userId, edge);
+
+      // Assert
+      expect(session.run).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.objectContaining({
+          fromId: edge.from,
+          toId: edge.to,
+          id: edge.id,
+          type: edge.type,
+        }),
+      );
+      expect(createdId).toBe(edge.id);
+    });
+  });
+
+  describe('deleteEdge', () => {
+    it('should delete the edge with the specified id', async () => {
+      // Arrange
+      const id = '123';
+      const count = 1;
+      const record = {
+        get: jest.fn().mockReturnValue(count),
+      };
+      const result = {
+        records: [record],
+      };
+      const session = {
+        run: jest.fn().mockResolvedValue(result),
+        close: jest.fn(),
+      };
+
+      driver.session = jest.fn().mockReturnValue(session);
+      // Act
+      const deleted = await service.deleteEdge(id);
+
+      // Assert
+      expect(session.run).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.objectContaining({ edgeId: id }),
+      );
+      expect(deleted).toBe(true);
+    });
+
+    it('should return false if the edge was not deleted', async () => {
+      // Arrange
+      const id = '123';
+      const count = 0;
+      const record = {
+        get: jest.fn().mockReturnValue(count),
+      };
+      const result = {
+        records: [record],
+      };
+      const session = {
+        run: jest.fn().mockResolvedValue(result),
+        close: jest.fn(),
+      };
+
+      driver.session = jest.fn().mockReturnValue(session);
+
+      // Act
+      const deleted = await service.deleteEdge(id);
+
+      // Assert
+      expect(session.run).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.objectContaining({ edgeId: id }),
+      );
+      expect(deleted).toBe(false);
+    });
+
+    it('should throw an error if the query fails', async () => {
+      // Arrange
+      const id = '123';
+      const session = {
+        run: jest.fn().mockRejectedValue(new Error('Failed to delete edge')),
+        close: jest.fn(),
+      };
+
+      driver.session = jest.fn().mockReturnValue(session);
+
+      // Act & assert
+      await expect(service.deleteEdge(id)).rejects.toThrow(
+        'Failed to delete edge',
+      );
     });
   });
 });

@@ -9,5 +9,6 @@ import { neo4jProviderFactory } from '../database/neo4j';
     KnowledgeNodeService,
     { provide: 'Driver', useValue: neo4jProviderFactory() },
   ],
+  exports: [KnowledgeNodeService],
 })
 export class KnowledgeNodeModule {}

@@ -1,8 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { SessionContainer } from 'supertokens-node/recipe/session';
-import { User } from 'supertokens-node/recipe/thirdpartypasswordless';
 import { AuthGuard } from '../../auth/auth.guard';
-import { Session } from '../../auth/session.decorator';
 import { UserService } from '../user.service';
 import { UserController } from '../user.controller';
 import { expectedUserInfo, userId } from '../__stubs__/stubs';
