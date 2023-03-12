@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { Completed, Edge, EdgeFromTo, KnowledgeEdgeType, Node } from '../../types/types'
 import { VisNode, VisEdge, VisNodeColor } from './type'
 
-export function eventWrapper(callback: (e: any) => void, editable: boolean) {
+export function eventWrapper(callback: (e: unknown) => void, editable: boolean) {
   return (e: unknown) => {
     if (editable) {
       callback(e)
