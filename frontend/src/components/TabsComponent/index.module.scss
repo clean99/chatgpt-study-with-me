@@ -1,0 +1,27 @@
+@import '../../styles/color.scss';
+
+.tabs {
+    background-color: #fff;
+  }
+  
+  .tabList {
+    display: flex;
+  }
+  
+  .tab {
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 16px;
+    color: $color-text;
+    transition: background-color 0.3s ease;
+  
+    &:hover {
+      background-color: $color-danger;
+      color: #fff;
+    }
+  
+    &.active {
+      background-color: $color-primary;
+      color: #fff;
+    }
+}

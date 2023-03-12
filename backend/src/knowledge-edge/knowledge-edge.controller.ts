@@ -50,22 +50,22 @@ export class KnowledgeEdgeController {
   @ApiResponse({ status: 201, description: 'Created', type: Boolean })
   @ApiBody({ type: CreateKnowledgeEdgeDto })
   async createEdge(
-    @Body('source') source: string,
-    @Body('target') target: string,
+    @Body('from') from: string,
+    @Body('to') to: string,
     @Body('type') type?: KnowledgeEdgeType,
   ): Promise<boolean> {
-    return await this.edgeService.connect(source, target, type);
+    return await this.edgeService.connect(from, to, type);
   }
 
   @Delete()
   @ApiResponse({ status: 200, description: 'Success', type: Boolean })
   @ApiBody({ type: DeleteKnowledgeEdgeDto })
   async deleteEdge(
-    @Body('source') source: string,
-    @Body('target') target: string,
+    @Body('from') from: string,
+    @Body('to') to: string,
     @Body('type') type?: KnowledgeEdgeType,
   ): Promise<boolean> {
-    const success = await this.edgeService.disconnect(source, target, type);
+    const success = await this.edgeService.disconnect(from, to, type);
     return success;
   }
 }

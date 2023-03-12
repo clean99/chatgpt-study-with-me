@@ -2,6 +2,8 @@
     "compilerOptions": {
         "target": "es5",
         "lib": ["dom", "dom.iterable", "esnext"],
+        "useDefineForClassFields": true,
+        "experimentalDecorators": true,
         "allowJs": true,
         "skipLibCheck": true,
         "esModuleInterop": true,

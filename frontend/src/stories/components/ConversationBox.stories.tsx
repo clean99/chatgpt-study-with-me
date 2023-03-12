@@ -1,18 +1,16 @@
-import * as React from 'react';
+import * as React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-import ConversationBox from '../../components/ConversationBox';
-import { UserType } from '../../types/types';
+import ConversationBox from '../../components/ConversationBox'
+import { UserType } from '../../types/types'
 
 export default {
   title: 'Components/ConversationBox',
   component: ConversationBox,
-} as ComponentMeta<typeof ConversationBox>;
+} as ComponentMeta<typeof ConversationBox>
 
-const Template: ComponentStory<typeof ConversationBox> = (args) => (
-  <ConversationBox {...args} />
-);
+const Template: ComponentStory<typeof ConversationBox> = (args) => <ConversationBox {...args} />
 
-export const Example = Template.bind({});
+export const Example = Template.bind({})
 Example.args = {
   response: [
     { text: 'Hello, how can I help you?', type: UserType.BOT },
@@ -21,4 +19,4 @@ Example.args = {
     { text: 'Is there a free trial available?', type: UserType.USER },
     { text: 'Yes, we offer a 14-day free trial.', type: UserType.BOT },
   ],
-};
+}

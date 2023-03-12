@@ -7,6 +7,7 @@ import { ChatgptModule } from './chatgpt/chatgpt.module';
 import { GqlModule } from './gql/gql.module';
 import { KnowledgeNodeModule } from './knowledge-node/knowledge-node.module';
 import { KnowledgeEdgeModule } from './knowledge-edge/knowledge-edge.module';
+import { KnowledgeGraphModule } from './knowledge-graph/knowledge-graph.module';
 import * as SuperTokensConfig from './config';
 
 @Module({
@@ -22,6 +23,7 @@ import * as SuperTokensConfig from './config';
     GqlModule,
     KnowledgeNodeModule,
     KnowledgeEdgeModule,
+    KnowledgeGraphModule,
   ],
   controllers: [AppController],
   providers: [AppService],

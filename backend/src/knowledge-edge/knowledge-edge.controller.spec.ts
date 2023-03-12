@@ -1,9 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { Driver } from 'neo4j-driver-core';
-import {
-  KnowledgeEdge,
-  KnowledgeEdgeType,
-} from '../models/knowledge-edge.model';
+import { KnowledgeEdgeType } from '../models/knowledge-edge.model';
 import { KnowledgeEdgeController } from './knowledge-edge.controller';
 import { KnowledgeEdgeService } from './knowledge-edge.service';
 

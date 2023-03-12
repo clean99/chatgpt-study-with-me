@@ -27,7 +27,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
   navigationMenuItems,
   isLogin,
 }) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   return (
     <div className='navigation-bar'>
       <div className='navigation-bar__menulogo'>
@@ -53,16 +53,19 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
           <QuestionCircleOutlined />
         </div>
         <div className='navigation-bar__icon'>
-          {
-            isLogin ?
-              <div className='navigation-bar__dropdown'>
+          {isLogin ? (
+            <div className='navigation-bar__dropdown'>
               <Dropdown
                 menu={{ items: dropdownOptions }}
                 Icon={() => <Avatar size={'small'} src={avatarSrc} username={username} />}
                 text={username}
               />
-          </div> : <Button type='text' onClick={() => navigate('/auth')} >Log In</Button>
-          }
+            </div>
+          ) : (
+            <Button type='text' onClick={() => navigate('/auth')}>
+              Log In
+            </Button>
+          )}
         </div>
       </div>
     </div>
