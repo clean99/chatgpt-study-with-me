@@ -42,6 +42,6 @@ export const routes = [
       </SessionAuth>
     ),
   },
-  { label: 'Redirect', key: '', element: () => <Navigate to='/graphpage' /> },
+  { label: 'Redirect', key: '', element: () => <Navigate to='/graph' /> },
   { label: 'Contact', key: 'contact' },
 ]
