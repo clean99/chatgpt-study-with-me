@@ -21,7 +21,8 @@ export class KnowledgeEdge {
   })
   type: KnowledgeEdgeType;
 
-  constructor(from: string, to: string, type: KnowledgeEdgeType) {
+  constructor(from: string, to: string, type: KnowledgeEdgeType, id: string) {
+    this.id = id;
     this.from = from;
     this.to = to;
     this.type = type;

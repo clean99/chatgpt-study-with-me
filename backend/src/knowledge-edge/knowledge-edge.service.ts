@@ -10,7 +10,8 @@ const processEdgeRecord = (record) => {
   const from = record.get('from');
   const to = record.get('to');
   const type = record.get('type');
-  return new KnowledgeEdge(from, to, type);
+  const id = record.get('id');
+  return new KnowledgeEdge(from, to, type, id);
 };
 
 @Injectable()
@@ -22,7 +23,7 @@ export class KnowledgeEdgeService {
     const result = await session.run(
       `MATCH (n1:KnowledgeNode)-[rel:KNOWLEDGE_NODE_RELATION]->(n2:KnowledgeNode)
        WHERE n1.id IN $nodeIds AND n2.id IN $nodeIds
-       RETURN n1.id as from, n2.id as to, rel.type as type`,
+       RETURN n1.id as from, n2.id as to, rel.type as type, rel.id as id`,
       { nodeIds },
     );
     session.close();
@@ -84,12 +85,12 @@ export class KnowledgeEdgeService {
     // Generate a unique ID for the new edge
 
     try {
-      const result = await session.run(
+      const { records } = await session.run(
         `
-        MATCH (from:KnowledgeNode)<-[:HAS_KNOWLEDGE_NODE]-(user:User {id: $userId}), (to:KnowledgeNode)
-        WHERE from.id = $fromId AND to.id = $toId
-        CREATE (from)-[rel:KNOWLEDGE_EDGE {id: $id, type: $type}]->(to)
-        RETURN rel.id as id
+        MATCH (n1:KnowledgeNode {id: $fromId})<-[:HAS_KNOWLEDGE_NODE]-(u:User {id: $userId}),
+        (n2:KnowledgeNode {id: $toId})<-[:HAS_KNOWLEDGE_NODE]-(u)
+        CREATE (n1)-[r:KNOWLEDGE_NODE_RELATION {id: $id, type: $type}]->(n2)
+        RETURN r
         `,
         {
           userId,
@@ -100,25 +101,27 @@ export class KnowledgeEdgeService {
         },
       );
 
-      // Return the ID of the created edge
-      const record = result.records[0];
-      return record.get('id');
+      if (records.length === 0) {
+        throw new Error(
+          `Could not create edge between nodes ${edge.from} and ${edge.to}`,
+        );
+      }
+      return records[0].get('r');
     } finally {
       session.close();
     }
   }
 
-  async deleteEdge(userId: string, id: string): Promise<boolean> {
+  async deleteEdge(id: string): Promise<boolean> {
     const session = this.driver.session();
-
     try {
       const result = await session.run(
         `
-        MATCH (user:User {id: $userId})-[rel:KNOWLEDGE_EDGE {id: $id}]->()
-        DELETE rel
-        RETURN COUNT(rel) AS count
+        MATCH ()-[r:KNOWLEDGE_NODE_RELATION {id: $edgeId}]->()
+        DELETE r
+        RETURN COUNT(r) AS count
         `,
-        { userId, id },
+        { edgeId: id },
       );
 
       // Check if an edge was deleted
@@ -136,7 +139,7 @@ export class KnowledgeEdgeService {
 
     // Delete edges
     for (const edge of deleted) {
-      await this.deleteEdge(userId, edge);
+      await this.deleteEdge(edge);
     }
 
     // Add new edges
@@ -146,7 +149,7 @@ export class KnowledgeEdgeService {
 
     // Update existing edges
     for (const edge of updated) {
-      await this.deleteEdge(userId, edge.id);
+      await this.deleteEdge(edge.id);
       await this.createEdge(userId, edge);
     }
 

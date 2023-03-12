@@ -41,6 +41,7 @@ describe('KnowledgeEdgeService', () => {
       if (path === 'from') return '1' + key;
       if (path === 'to') return '2' + key;
       if (path === 'type') return 'HAS_KNOWLEDGE';
+      if (path === 'id') return key;
     };
     it('should return an empty array when no edges exist between the provided nodes', async () => {
       // Arrange
@@ -82,8 +83,8 @@ describe('KnowledgeEdgeService', () => {
 
       // Assert
       expect(result).toEqual([
-        new KnowledgeEdge('11', '21', KnowledgeEdgeType.HAS_KNOWLEDGE),
-        new KnowledgeEdge('12', '22', KnowledgeEdgeType.HAS_KNOWLEDGE),
+        new KnowledgeEdge('11', '21', KnowledgeEdgeType.HAS_KNOWLEDGE, '1'),
+        new KnowledgeEdge('12', '22', KnowledgeEdgeType.HAS_KNOWLEDGE, '2'),
       ]);
       expect(driver.session).toHaveBeenCalled();
       expect(session.run).toHaveBeenCalledWith(
@@ -269,12 +270,12 @@ describe('KnowledgeEdgeService', () => {
 
       driver.session = jest.fn().mockReturnValue(session);
       // Act
-      const deleted = await service.deleteEdge(userId, id);
+      const deleted = await service.deleteEdge(id);
 
       // Assert
       expect(session.run).toHaveBeenCalledWith(
         expect.any(String),
-        expect.objectContaining({ id }),
+        expect.objectContaining({ edgeId: id }),
       );
       expect(deleted).toBe(true);
     });
@@ -297,12 +298,12 @@ describe('KnowledgeEdgeService', () => {
       driver.session = jest.fn().mockReturnValue(session);
 
       // Act
-      const deleted = await service.deleteEdge(userId, id);
+      const deleted = await service.deleteEdge(id);
 
       // Assert
       expect(session.run).toHaveBeenCalledWith(
         expect.any(String),
-        expect.objectContaining({ id }),
+        expect.objectContaining({ edgeId: id }),
       );
       expect(deleted).toBe(false);
     });
@@ -318,7 +319,7 @@ describe('KnowledgeEdgeService', () => {
       driver.session = jest.fn().mockReturnValue(session);
 
       // Act & assert
-      await expect(service.deleteEdge(userId, id)).rejects.toThrow(
+      await expect(service.deleteEdge(id)).rejects.toThrow(
         'Failed to delete edge',
       );
     });
