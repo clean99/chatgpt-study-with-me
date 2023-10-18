@@ -1,4 +1,4 @@
-FROM node:18.14.2-bullseye-slim as builder
+FROM node:18.18.2-bullseye-slim as builder
 
 ENV NODE_ENV build
 
@@ -12,7 +12,7 @@ RUN npm install \
 
 # ---
 
-FROM node:18.14.2-bullseye-slim
+FROM node:18.18.2-bullseye-slim
 
 ENV NODE_ENV production
 
