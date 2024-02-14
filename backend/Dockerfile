@@ -1,4 +1,4 @@
-FROM node:18.14.2-bullseye-slim as builder
+FROM node:hydrogen-bullseye-slim as builder
 
 ENV NODE_ENV build
 
@@ -12,7 +12,7 @@ RUN npm install \
 
 # ---
 
-FROM node:18.14.2-bullseye-slim
+FROM node:hydrogen-bullseye-slim
 
 ENV NODE_ENV production
 
