@@ -21,7 +21,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@neo4j/graphql": "^3.17.0",
+    "@neo4j/graphql": "^3.24.0",
     "@nestjs/apollo": "^10.2.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.3.1",
@@ -29,7 +29,7 @@
     "@nestjs/graphql": "^10.2.0",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/swagger": "^6.2.1",
-    "@sendgrid/mail": "^7.7.0",
+    "@sendgrid/mail": "^8.1.2",
     "apollo-server-express": "^3.11.1",
     "chatgpt": "^4.7.1",
     "class-validator": "^0.14.0",
@@ -41,7 +41,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
-    "supertokens-node": "latest"
+    "supertokens-node": "16.6.3"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
